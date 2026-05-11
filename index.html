@@ -210,7 +210,7 @@ select option{background:var(--card)}
 <!-- DASHBOARD -->
 <div class="pg on" id="pg-dash">
   <div class="g2">
-    <div class="sc"><div class="sl">Portfolio Value</div><div class="sv g" id="d-val">&#163;0.00</div><div class="ssub" id="d-val-sub"></div></div>
+    <div class="sc"><div class="sl">Portfolio Value</div><div class="sv g" id="d-val">&#163;0.00</div></div>
     <div class="sc"><div class="sl">Total Gain/Loss</div><div class="sv" id="d-gl">&#8212;</div><div class="ssub" id="d-glp"></div></div>
     <div class="sc"><div class="sl">Annual Income</div><div class="sv a" id="d-ann">&#163;0.00</div></div>
     <div class="sc"><div class="sl">Monthly Avg</div><div class="sv" id="d-mon">&#163;0.00</div></div>
@@ -220,16 +220,16 @@ select option{background:var(--card)}
     <div class="sc"><div class="sl">Yield on Cost</div><div class="sv b" id="d-yld">&#8212;</div></div>
   </div>
 
-  <div class="card" style="padding:12px 14px;margin-bottom:10px">
-    <div class="clbl" style="margin-bottom:10px">Bank Balance <span style="color:var(--mid);font-weight:400;text-transform:none;letter-spacing:0;font-size:9px">manually updated &middot; not in portfolio value</span></div>
-    <div style="display:flex;gap:8px;align-items:stretch">
-      <div style="flex:1;background:var(--surf);border-radius:10px;padding:10px">
+  <div class="card" style="padding:12px 14px">
+    <div class="clbl" style="margin-bottom:10px">Bank Balance <span style="color:var(--mid);font-weight:400;text-transform:none;letter-spacing:0;font-size:9px">not included in portfolio</span></div>
+    <div style="display:flex;gap:8px">
+      <div style="flex:2;background:var(--surf);border-radius:10px;padding:10px">
         <div style="font-size:9px;color:var(--mid);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">Account</div>
         <input id="bank-label" type="text" placeholder="e.g. Barclays"
           style="width:100%;background:transparent;border:none;border-bottom:1px solid var(--bord);padding:3px 0;font-size:12px;color:var(--txt);outline:none;font-family:inherit"
           oninput="DB.bankLabel=this.value;persist();">
       </div>
-      <div style="flex:1;background:var(--surf);border-radius:10px;padding:10px">
+      <div style="flex:2;background:var(--surf);border-radius:10px;padding:10px">
         <div style="font-size:9px;color:var(--mid);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">Balance</div>
         <div style="display:flex;align-items:center;gap:4px">
           <span style="color:var(--blu);font-size:14px;font-weight:700">&#163;</span>
@@ -239,9 +239,8 @@ select option{background:var(--card)}
         </div>
       </div>
       <div style="flex:1;background:var(--surf);border-radius:10px;padding:10px;text-align:center">
-        <div style="font-size:9px;color:var(--mid);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">Total Cash</div>
-        <div style="font-size:16px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--blu)" id="d-bank-total">&#163;0.00</div>
-        <div style="font-size:9px;color:var(--mid);margin-top:2px" id="d-bank-label-display">No account set</div>
+        <div style="font-size:9px;color:var(--mid);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px">Total</div>
+        <div style="font-size:15px;font-weight:800;color:var(--blu);font-variant-numeric:tabular-nums" id="d-bank-total">&#163;0</div>
       </div>
     </div>
   </div>
@@ -258,12 +257,12 @@ select option{background:var(--card)}
 
   <div class="card">
     <div class="clbl">Invest vs ISA</div>
-    <div id="d-split"><div style="color:var(--mid);font-size:12px">Tap Sync T212 to load your portfolio</div></div>
+    <div id="d-split"><div style="color:var(--mid);font-size:12px">Tap Sync to load your portfolio</div></div>
   </div>
 
   <div class="card">
     <div class="clbl">Upcoming Payments</div>
-    <div id="d-next"><div style="color:var(--mid);font-size:12px">Sync your portfolio to see upcoming payments</div></div>
+    <div id="d-next"><div style="color:var(--mid);font-size:12px">Tap Sync to load your portfolio</div></div>
   </div>
 
   <div class="card">
@@ -282,19 +281,19 @@ select option{background:var(--card)}
     <div style="display:flex;justify-content:space-between;margin-top:10px;border-top:1px solid var(--bord);padding-top:10px">
       <div style="text-align:center;flex:1"><div style="font-size:9px;color:var(--mid);text-transform:uppercase;letter-spacing:.6px;margin-bottom:3px">Cost Basis</div><div style="font-size:12px;font-weight:700;color:var(--mid)" id="growth-start">-</div></div>
       <div style="text-align:center;flex:1"><div style="font-size:9px;color:var(--mid);text-transform:uppercase;letter-spacing:.6px;margin-bottom:3px">Market Value</div><div style="font-size:12px;font-weight:700;color:var(--grn)" id="growth-now">-</div></div>
-      <div style="text-align:center;flex:1"><div style="font-size:9px;color:var(--mid);text-transform:uppercase;letter-spacing:.6px;margin-bottom:3px">Total Gain/Loss</div><div style="font-size:12px;font-weight:700" id="growth-ret">-</div></div>
+      <div style="text-align:center;flex:1"><div style="font-size:9px;color:var(--mid);text-transform:uppercase;letter-spacing:.6px;margin-bottom:3px">Total Return</div><div style="font-size:12px;font-weight:700" id="growth-ret">-</div></div>
     </div>
   </div>
 
   <div class="card" style="padding:12px 14px">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+    <div style="display:flex;align-items:center;justify-content:space-between">
       <div>
         <div class="clbl" style="margin-bottom:2px">T212 Live Sync</div>
-        <div style="font-size:10px;color:var(--mid)" id="d-prices-status">Pulls live positions, prices and dividends from Trading 212</div>
+        <div style="font-size:10px;color:var(--mid)" id="d-sync-status">Pulls live data from Trading 212</div>
       </div>
-      <button onclick="syncT212()" id="d-fetch-btn"
+      <button onclick="syncT212()" id="d-sync-btn"
         style="background:var(--grn);color:#071207;border:none;border-radius:10px;padding:9px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;flex-shrink:0">
-        &#8635; Sync T212
+        &#8635; Sync
       </button>
     </div>
   </div>
@@ -302,30 +301,6 @@ select option{background:var(--card)}
 
 <!-- PORTFOLIO -->
 <div class="pg" id="pg-port">
-  <div class="card">
-    <div class="clbl">Add / Update Holding</div>
-    <div class="frow">
-      <div class="fg"><label>Ticker</label><input id="f-tk" placeholder="e.g. LGEN" style="text-transform:uppercase"></div>
-      <div class="fg"><label>Name</label><input id="f-nm" placeholder="Company name"></div>
-    </div>
-    <div class="frow3">
-      <div class="fg"><label>Shares</label><input id="f-sh" type="number" min="0" step="any" placeholder="0"></div>
-      <div class="fg"><label>Avg Price &#163;</label><input id="f-ap" type="number" min="0" step="any" placeholder="0.00"></div>
-      <div class="fg"><label>Current Price &#163;</label><input id="f-cp" type="number" min="0" step="any" placeholder="0.00"></div>
-    </div>
-    <div class="frow">
-      <div class="fg"><label>Yield %</label><input id="f-yl" type="number" min="0" step="any" placeholder="auto"></div>
-      <div class="fg"><label>Ex-Div Date</label><input id="f-ed" type="date"></div>
-    </div>
-    <div class="frow">
-      <div class="fg"><label>Account</label>
-        <select id="f-ac"><option value="invest">Invest</option><option value="isa">ISA</option></select>
-      </div>
-      <div class="fg"><label>Next Payment &#163;</label><input id="f-np" type="number" min="0" step="any" placeholder="0.00"></div>
-    </div>
-    <button class="btn" onclick="addHolding()">+ Add Holding</button>
-  </div>
-
   <div class="card" style="padding:12px 14px">
     <div class="clbl" style="margin-bottom:10px">Returns Summary</div>
     <div style="background:var(--surf);border-radius:8px;overflow:hidden">
@@ -343,11 +318,29 @@ select option{background:var(--card)}
       </div>
     </div>
   </div>
-
+  <div class="card">
+    <div class="clbl">Add Holding Manually</div>
+    <div class="frow">
+      <div class="fg"><label>Ticker</label><input id="f-tk" placeholder="e.g. LGEN" style="text-transform:uppercase"></div>
+      <div class="fg"><label>Name</label><input id="f-nm" placeholder="Company name"></div>
+    </div>
+    <div class="frow3">
+      <div class="fg"><label>Shares</label><input id="f-sh" type="number" min="0" step="any" placeholder="0"></div>
+      <div class="fg"><label>Avg Price &#163;</label><input id="f-ap" type="number" min="0" step="any" placeholder="0.00"></div>
+      <div class="fg"><label>Current Price &#163;</label><input id="f-cp" type="number" min="0" step="any" placeholder="0.00"></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label>Account</label>
+        <select id="f-ac"><option value="invest">Invest</option><option value="isa">ISA</option></select>
+      </div>
+      <div class="fg"><label>Yield %</label><input id="f-yl" type="number" min="0" step="any" placeholder="auto"></div>
+    </div>
+    <button class="btn" onclick="addHolding()">+ Add Holding</button>
+  </div>
   <div class="sec-hd"><span class="sec-lbl g">Invest</span><span id="inv-cnt" style="font-size:11px;color:var(--mid)"></span><span class="sec-tot" id="inv-tot" style="color:var(--grn)"></span></div>
-  <div class="card" id="inv-list"><div class="empty"><div class="ei">&#128202;</div><p>Tap Sync T212 on Dashboard to load holdings</p></div></div>
+  <div class="card" id="inv-list"><div class="empty"><div class="ei">&#128202;</div><p>Tap Sync on Dashboard</p></div></div>
   <div class="sec-hd" style="margin-top:4px"><span class="sec-lbl a">ISA</span><span id="isa-cnt" style="font-size:11px;color:var(--mid)"></span><span class="sec-tot" id="isa-tot" style="color:var(--amb)"></span></div>
-  <div class="card" id="isa-list"><div class="empty"><div class="ei">&#128737;&#65039;</div><p>Tap Sync T212 on Dashboard to load holdings</p></div></div>
+  <div class="card" id="isa-list"><div class="empty"><div class="ei">&#128737;&#65039;</div><p>Tap Sync on Dashboard</p></div></div>
 </div>
 
 <!-- CALENDAR -->
@@ -357,7 +350,7 @@ select option{background:var(--card)}
     <div class="sc"><div class="sl">90 Days</div><div class="sv a" id="c90">&#163;0</div></div>
     <div class="sc"><div class="sl">12 Months</div><div class="sv b" id="c12">&#163;0</div></div>
   </div>
-  <div id="cal-body"><div class="empty"><div class="ei">&#128197;</div><p>Sync T212 to see upcoming dividend payments</p></div></div>
+  <div id="cal-body"><div class="empty"><div class="ei">&#128197;</div><p>Tap Sync to see upcoming payments</p></div></div>
 </div>
 
 <!-- HISTORY -->
@@ -368,7 +361,7 @@ select option{background:var(--card)}
   </div>
   <div class="card">
     <div class="clbl">Dividend History</div>
-    <div id="hist-body"><div class="empty"><div class="ei">&#128220;</div><p>Sync T212 to see dividend history</p></div></div>
+    <div id="hist-body"><div class="empty"><div class="ei">&#128220;</div><p>Tap Sync to see dividend history</p></div></div>
   </div>
 </div>
 
@@ -399,8 +392,8 @@ select option{background:var(--card)}
     <div class="sc"><div class="sl">Monthly Income</div><div class="sv" id="p-md">&#8212;</div></div>
     <div class="sc"><div class="sl">Total Received</div><div class="sv" id="p-tr">&#8212;</div></div>
   </div>
-  <div class="card" style="margin-bottom:10px">
-    <div class="clbl" style="margin-bottom:6px">Growth Chart</div>
+  <div class="card">
+    <div class="clbl">Growth Chart</div>
     <svg id="psvg" class="psvg" viewBox="0 0 320 100"></svg>
     <div style="display:flex;justify-content:space-between;margin-top:3px;font-size:9px;color:var(--mid)"><span>Now</span><span id="p-el">10yr</span></div>
   </div>
@@ -455,62 +448,33 @@ select option{background:var(--card)}
     <div style="font-size:11px;color:var(--mid);margin-bottom:10px;line-height:1.6">Years to double income per holding by reinvesting dividends.</div>
     <div id="drip-table"></div>
   </div>
-  <div class="card">
-    <div class="clbl">Live Prices <span id="prices-status" style="font-size:10px;color:var(--mid);font-weight:400"></span></div>
-    <button class="btn" onclick="fetchPrices()" id="fetch-btn">&#8635; Refresh Live Prices</button>
-    <div id="prices-log" style="margin-top:10px;font-size:11px;color:var(--mid);line-height:1.8;min-height:20px"></div>
-  </div>
 </div>
 
 <!-- IMPORT -->
 <div class="pg" id="pg-imp">
   <div class="card">
-    <div class="clbl">T212 API Sync</div>
+    <div class="clbl">T212 Auto Sync</div>
     <div style="font-size:11px;color:var(--mid);margin-bottom:12px;line-height:1.7">
-      Your T212 API keys are built in. Tap Sync T212 on the Dashboard to pull everything automatically.<br><br>
-      <strong style="color:var(--grn)">What syncs:</strong> All positions, current prices, average cost, cash balance, dividend history.
+      Automatically pulls all positions, prices, cash balance and dividend history from both your Invest and ISA accounts.
     </div>
     <button class="btn" onclick="syncT212()">&#8635; Sync T212 Now</button>
-    <div id="sync-st" style="margin-top:10px;font-size:11px;color:var(--mid);line-height:1.8;white-space:pre-wrap;min-height:16px"></div>
+    <div id="sync-log" style="margin-top:10px;font-size:11px;color:var(--mid);line-height:1.8;white-space:pre-wrap;min-height:16px"></div>
   </div>
-
   <div class="card">
-    <div class="clbl">Manual CSV Import <span style="font-size:9px;color:var(--mid);font-weight:400;text-transform:none;letter-spacing:0">fallback option</span></div>
+    <div class="clbl">Manual CSV Import <span style="font-size:9px;color:var(--mid);font-weight:400;text-transform:none;letter-spacing:0">fallback</span></div>
     <div class="acct-toggle">
-      <button id="btn-inv" class="acct-btn inv on" onclick="setAcct('invest')">Invest Account</button>
-      <button id="btn-isa" class="acct-btn isa"    onclick="setAcct('isa')">ISA Account</button>
+      <button id="btn-inv" class="acct-btn inv on" onclick="setAcct('invest')">Invest</button>
+      <button id="btn-isa" class="acct-btn isa"    onclick="setAcct('isa')">ISA</button>
     </div>
     <label class="filelbl">
       <input type="file" accept=".csv,text/csv,text/*" onchange="handleFile(this)">
       <div class="fi">&#128194;</div>
-      <div class="ft"><strong>Tap to select CSV file</strong><br>T212 Activity export</div>
+      <div class="ft"><strong>Select CSV file</strong><br>T212 Activity export</div>
     </label>
-    <textarea id="paste-box" rows="3" placeholder="Or paste CSV text here..." style="margin-bottom:8px;font-size:11px"></textarea>
+    <textarea id="paste-box" rows="3" placeholder="Or paste CSV here..." style="margin-bottom:8px;font-size:11px"></textarea>
     <button class="btn amb" onclick="handlePaste()">Import Pasted CSV</button>
-    <div id="imp-st">Select account above, then import your CSV.</div>
+    <div id="imp-st">Select account then import CSV.</div>
   </div>
-
-  <div class="card">
-    <div class="clbl">Live Dividend Data <span style="font-size:9px;color:var(--mid);font-weight:400;text-transform:none;letter-spacing:0">via Finnhub</span></div>
-    <div style="font-size:11px;color:var(--mid);margin-bottom:10px;line-height:1.7">Fetches real dividend schedules and ex-dates for all holdings.</div>
-    <button class="btn amb" onclick="fetchDividendData()" id="div-fetch-btn">&#8635; Refresh Dividend Data</button>
-    <div id="div-fetch-st" style="margin-top:10px;font-size:11px;color:var(--mid);line-height:1.8;white-space:pre-wrap;min-height:16px"></div>
-  </div>
-
-  <div class="card">
-    <div class="clbl">Recalculate</div>
-    <button class="btn sec" onclick="recalcAll()" style="margin-bottom:0">Recalculate All Dividends</button>
-    <div id="recalc-st" style="margin-top:8px;font-size:11px;color:var(--mid)"></div>
-  </div>
-
-  <div class="card">
-    <div class="clbl">Install as App</div>
-    <div style="font-size:12px;color:var(--lit);line-height:1.9;margin-bottom:10px">
-      <strong style="color:#fff">Android Chrome:</strong> tap <strong style="color:#fff">3-dot menu &#8942;</strong> &rarr; <strong style="color:#fff">Add to Home screen</strong>
-    </div>
-    <button class="btn sec" id="install-btn" style="display:none" onclick="doInstall()">Install App</button>
-  </div>
-
   <div class="card">
     <div class="clbl">Manage Data</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
@@ -521,7 +485,6 @@ select option{background:var(--card)}
 </div>
 
 <script>
-
 var UK_YIELDS = {
   // US growth stocks - no dividend
   GOOGL:0, AMZN:0, FSLR:0, LLY:0, NVDA:0, PLTR:0, HOOD:0, SOFI:0, VERX:2.6, WINC:9.3, GAW:2.8,
@@ -547,7 +510,7 @@ var UK_YIELDS = {
 
 var KNOWN_DIVS = {
 
-  // ── UK / LSE stocks ─────────────────────────────────────────────────────────
+  // â”€â”€ UK / LSE stocks â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   // User-confirmed exact payments
   LGEN: { payments: [
@@ -607,7 +570,7 @@ var KNOWN_DIVS = {
     { payDate:'2026-12-30', exDate:'2026-12-03', perShare:0.0575 }
   ], annualPerShare:0.2300, freq:4 },
 
-  // GAW: quarterly but variable amounts. FY25/26 total ~£4.85/share
+  // GAW: quarterly but variable amounts. FY25/26 total ~Â£4.85/share
   GAW: { payments: [
     { payDate:'2026-03-27', exDate:'2026-02-19', perShare:0.50 },
     { payDate:'2026-05-27', exDate:'2026-04-16', perShare:1.10 },
@@ -645,7 +608,7 @@ var KNOWN_DIVS = {
     { payDate:'2026-12-31', exDate:'2026-12-17', perShare:0.0402 }
   ], annualPerShare:0.1608, freq:4 },
 
-  // ── US / Non-LSE stocks ──────────────────────────────────────────────────────
+  // â”€â”€ US / Non-LSE stocks â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   // PLD Prologis: quarterly $1.07/share
   PLD: { payments: [
@@ -710,7 +673,7 @@ var KNOWN_DIVS = {
     { payDate:'2027-03-02', exDate:'2027-02-09', perShare:2.30 }
   ], annualPerShare:9.20, freq:4 },
 
-  // ASML: quarterly, ~€1.50-2.50/share variable
+  // ASML: quarterly, ~â‚¬1.50-2.50/share variable
   ASML: { payments: [
     { payDate:'2026-05-06', exDate:'2026-04-30', perShare:2.15 },
     { payDate:'2026-11-05', exDate:'2026-10-30', perShare:1.52 }
@@ -743,7 +706,7 @@ var KNOWN_DIVS = {
   ], annualPerShare:0.420, freq:4 },
 
   // WINC: iShares World Equity High Income Active UCITS ETF - quarterly Jan/Apr/Jul/Oct
-  // LSE GBP class ~£0.10/quarter, yield ~9.3%
+  // LSE GBP class ~Â£0.10/quarter, yield ~9.3%
   WINC: { payments: [
     { payDate:'2026-04-30', exDate:'2026-04-17', perShare:0.100 },
     { payDate:'2026-07-30', exDate:'2026-07-16', perShare:0.100 },
@@ -752,13 +715,10 @@ var KNOWN_DIVS = {
   ], annualPerShare:0.400, freq:4 }
 }
 
-// ── KEYS ──────────────────────────────────────────────────────────────────────
-var T212_INVEST_KEY = '41145131ZmqUdMZlbpSpfxslyVxjNUqzYUkNV';
-var T212_ISA_KEY    = '41814643ZQRImDciYLCPWAoklIhnPwFnSTPLF';
-var T212_BASE       = 'https://live.trading212.com/api/v0';
-var FINN_KEY        = 'd80o4thr01qt5k5vlqc0d80o4thr01qt5k5vlqcg';
+// â”€â”€ CONFIG â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+var API = 'https://divtrack-api-production.up.railway.app';
 
-// ── DATA ──────────────────────────────────────────────────────────────────────
+// â”€â”€ DATA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 var DB = {
   invest:{holdings:[],history:[]}, isa:{holdings:[],history:[]},
   drip:true, goalMonthly:0, bankBalance:0, bankLabel:'', snapshots:[]
@@ -771,23 +731,23 @@ function hydrate(){
   try{
     var raw=localStorage.getItem('dt6'); if(!raw)return;
     var d=JSON.parse(raw);
-    DB.invest   =d.invest   ||{holdings:[],history:[]};
-    DB.isa      =d.isa      ||{holdings:[],history:[]};
-    DB.drip     =d.drip!==false;
+    DB.invest     =d.invest     ||{holdings:[],history:[]};
+    DB.isa        =d.isa        ||{holdings:[],history:[]};
+    DB.drip       =d.drip!==false;
     DB.goalMonthly=d.goalMonthly||0;
     DB.bankBalance=d.bankBalance||0;
-    DB.bankLabel  =d.bankLabel||'';
-    DB.snapshots  =d.snapshots||[];
+    DB.bankLabel  =d.bankLabel  ||'';
+    DB.snapshots  =d.snapshots  ||[];
   }catch(e){}
 }
 
-// ── FORMAT ────────────────────────────────────────────────────────────────────
+// â”€â”€ FORMAT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function fmt(n){return '\u00a3'+Math.abs(n||0).toLocaleString('en-GB',{minimumFractionDigits:2,maximumFractionDigits:2});}
 function n2(n){return (n||0).toLocaleString('en-GB',{minimumFractionDigits:2,maximumFractionDigits:2});}
 function fdate(s){if(!s)return'-';var d=new Date(s);return isNaN(d.getTime())?s:d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});}
 function fmo(d){return d.toLocaleDateString('en-GB',{month:'short',year:'numeric'});}
 
-// ── DERIVED ───────────────────────────────────────────────────────────────────
+// â”€â”€ DERIVED â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function getAdiv(h){return h.annualDiv||0;}
 function getCost(h){return h.cost||(h.shares*h.avgPrice)||0;}
 function getCurrVal(h){if(h.currentPrice&&h.shares)return h.shares*h.currentPrice;return getCost(h);}
@@ -803,246 +763,102 @@ function acctAnn(a){return DB[a].holdings.reduce(function(s,h){return s+getAdiv(
 function acctVal(a){return DB[a].holdings.reduce(function(s,h){return s+getCurrVal(h);},0);}
 function acctCost(a){return DB[a].holdings.reduce(function(s,h){return s+getCost(h);},0);}
 
-// ── T212 API SYNC ─────────────────────────────────────────────────────────────
-function t212Fetch(key, path) {
-  var url = T212_BASE + path;
-  var headers = { 'Authorization': key };
-  // Try direct first, fall back to CORS proxy
-  return fetch(url, { headers: headers })
+// â”€â”€ T212 SYNC â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function syncT212(){
+  var btn    = document.getElementById('d-sync-btn');
+  var status = document.getElementById('d-sync-status');
+  var log    = document.getElementById('sync-log');
+  if(btn){btn.disabled=true;btn.textContent='Syncing...';}
+  if(status)status.textContent='Connecting to T212...';
+  if(log)log.textContent='Fetching data from Trading 212...';
+
+  fetch(API+'/sync')
     .then(function(r){
-      if (!r.ok) throw new Error(r.status);
+      if(!r.ok) throw new Error('Server error: '+r.status);
       return r.json();
     })
-    .catch(function() {
-      // CORS blocked - try via proxy
-      var proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(url);
-      return fetch(proxyUrl, { headers: headers })
-        .then(function(r){
-          if (!r.ok) throw new Error('T212 API error ' + r.status + ' for ' + path);
-          return r.json();
+    .then(function(data){
+      if(data.error) throw new Error(data.error);
+
+      // Process each account
+      ['invest','isa'].forEach(function(acct){
+        var d = data[acct];
+        if(!d) return;
+
+        // Positions
+        var positions = Array.isArray(d.positions) ? d.positions : (d.positions&&d.positions.items)||[];
+        DB[acct].holdings = positions.map(function(p){
+          var raw = p.ticker||'';
+          // Clean T212 ticker format e.g. LGEN_EQ -> LGEN, AAPL_US_EQ -> AAPL
+          var ticker = raw.replace(/_[A-Z]+_EQ$/,'').replace(/_EQ$/,'').split('_')[0];
+          var existing = DB[acct].holdings.find(function(h){return h.ticker===ticker;});
+          var shares   = p.quantity||0;
+          var avgPrice = p.averagePrice||0;
+          var currPrice= p.currentPrice||avgPrice;
+          var cost     = shares*avgPrice;
+          return {
+            id:          existing?existing.id:Date.now()+Math.random(),
+            ticker:      ticker,
+            name:        existing?existing.name:ticker,
+            acct:        acct,
+            shares:      +shares.toFixed(6),
+            avgPrice:    +avgPrice.toFixed(4),
+            currentPrice:+currPrice.toFixed(4),
+            cost:        +cost.toFixed(2),
+            yieldPct:    existing?existing.yieldPct:0,
+            annualDiv:   existing?existing.annualDiv:0,
+            nextPay:     existing?existing.nextPay:0,
+            exDate:      existing?existing.exDate:'',
+            ppl:         p.ppl||0
+          };
+        }).filter(function(h){return h.shares>0.001;});
+
+        // Dividends
+        var divs = Array.isArray(d.dividends)?d.dividends:(d.dividends&&d.dividends.items)||[];
+        var seen = new Set(DB[acct].history.map(function(x){return x.ticker+'|'+x.date+'|'+x.amount;}));
+        divs.forEach(function(div){
+          var raw    = div.ticker||'';
+          var ticker = raw.replace(/_[A-Z]+_EQ$/,'').replace(/_EQ$/,'').split('_')[0];
+          var amt    = div.amount||div.grossAmount||0;
+          var date   = (div.paidOn||div.reference||'').split('T')[0];
+          if(!date||!amt||amt<=0)return;
+          var k=ticker+'|'+date+'|'+amt;
+          if(!seen.has(k)){
+            DB[acct].history.push({ticker:ticker,name:ticker,amount:amt,date:date,acct:acct});
+            seen.add(k);
+          }
         });
-    });
-}
 
-function t212FetchAll(key, path) {
-  var items = [];
-  function fetchPage(url) {
-    var headers = { 'Authorization': key };
-    return fetch(url, { headers: headers })
-      .catch(function() {
-        // Try CORS proxy
-        return fetch('https://corsproxy.io/?' + encodeURIComponent(url), { headers: headers });
-      })
-      .then(function(r){ return r.json(); })
-      .then(function(data) {
-        var pageItems = data.items || data || [];
-        if (Array.isArray(pageItems)) items = items.concat(pageItems);
-        if (data.nextPagePath) {
-          return fetchPage(T212_BASE + data.nextPagePath);
-        }
-        return items;
+        // Cash
+        if(d.cash&&d.cash.free!==undefined) DB[acct].cashFree=+(d.cash.free||0).toFixed(2);
       });
-  }
-  return fetchPage(T212_BASE + path + '?limit=50');
-}
 
-function syncT212() {
-  var btn    = document.getElementById('d-fetch-btn');
-  var status = document.getElementById('d-prices-status');
-  var syncSt = document.getElementById('sync-st');
-  if (btn)    { btn.disabled=true; btn.textContent='Syncing...'; }
-  if (status) status.textContent = 'Connecting...';
-  if (syncSt) syncSt.textContent = 'Starting sync...';
+      // Enrich all holdings with dividend data
+      recalcAll();
+      persist();
 
-  var log = [];
-  function addLog(msg) {
-    log.push(msg);
-    if (syncSt) syncSt.textContent = log.join('\n');
-  }
+      var inv=DB.invest.holdings.length, isa=DB.isa.holdings.length;
+      var divs=DB.invest.history.length+DB.isa.history.length;
+      var msg='\u2713 Synced '+( inv+isa)+' positions ('+inv+' Invest, '+isa+' ISA)\n'+
+              '\u2713 '+divs+' dividend payments\n'+
+              '\u2713 Last synced '+new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+      if(log)log.textContent=msg;
+      if(status)status.textContent='Last synced '+new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+      if(btn){btn.disabled=false;btn.textContent='\u21BB Sync';}
 
-  addLog('Step 1: Fetching Invest positions...');
-
-  // Test with a single simple call first
-  var investUrl = T212_BASE + '/equity/portfolio';
-  var isaUrl    = T212_BASE + '/equity/portfolio';
-
-  function tryFetch(url, key, label) {
-    addLog('Trying: ' + label);
-    return fetch(url, { headers: { 'Authorization': key } })
-      .then(function(r) {
-        addLog(label + ' direct: HTTP ' + r.status);
-        if (!r.ok) throw new Error('HTTP ' + r.status);
-        return r.json();
-      })
-      .catch(function(e) {
-        addLog(label + ' direct failed: ' + e.message + ' - trying proxy...');
-        var proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(url);
-        return fetch(proxyUrl, { headers: { 'Authorization': key } })
-          .then(function(r) {
-            addLog(label + ' proxy: HTTP ' + r.status);
-            if (!r.ok) throw new Error('Proxy HTTP ' + r.status);
-            return r.json();
-          })
-          .catch(function(e2) {
-            addLog(label + ' proxy also failed: ' + e2.message);
-            throw e2;
-          });
-      });
-  }
-
-  // Fetch invest portfolio
-  tryFetch(T212_BASE + '/equity/portfolio', T212_INVEST_KEY, 'Invest portfolio')
-    .then(function(data) {
-      addLog('Invest data received. Type: ' + typeof data);
-      if (Array.isArray(data)) addLog('Array with ' + data.length + ' items');
-      else if (data && data.items) addLog('Object with ' + data.items.length + ' items');
-      else addLog('Data: ' + JSON.stringify(data).slice(0, 200));
-
-      return tryFetch(T212_BASE + '/equity/portfolio', T212_ISA_KEY, 'ISA portfolio');
+      renderDash();
+      if(document.getElementById('pg-port').classList.contains('on'))renderPort();
+      if(document.getElementById('pg-cal').classList.contains('on'))renderCal();
+      if(document.getElementById('pg-hist').classList.contains('on'))renderHist();
     })
-    .then(function(data) {
-      addLog('ISA data received. Type: ' + typeof data);
-      if (Array.isArray(data)) addLog('Array with ' + data.length + ' items');
-      else if (data && data.items) addLog('Object with ' + data.items.length + ' items');
-      else addLog('Data: ' + JSON.stringify(data).slice(0, 200));
-
-      addLog('\nBoth accounts connected! Fetching full data...');
-      runFullSync(btn, status, syncSt);
-    })
-    .catch(function(e) {
-      addLog('\nFailed: ' + e.message);
-      addLog('\nThe T212 API may block browser requests due to CORS.');
-      addLog('Please use CSV Import as an alternative.');
-      if (btn) { btn.disabled=false; btn.textContent='\u21BB Sync T212'; }
-      if (status) status.textContent = 'Sync failed - see details';
+    .catch(function(e){
+      if(log)log.textContent='Error: '+e.message;
+      if(status)status.textContent='Sync failed';
+      if(btn){btn.disabled=false;btn.textContent='\u21BB Sync';}
     });
 }
 
-function runFullSync(btn, status, syncSt) {
-  var log = syncSt ? syncSt.textContent.split('\n') : [];
-  function addLog(msg) { log.push(msg); if(syncSt) syncSt.textContent=log.join('\n'); }
-
-  var results = { invest:{}, isa:{} };
-  var errors  = [];
-
-  Promise.all([
-    Promise.all([
-      t212Fetch(T212_INVEST_KEY, '/equity/portfolio').catch(function(e){ errors.push('Invest positions: '+e.message); return []; }),
-      t212Fetch(T212_INVEST_KEY, '/equity/account/cash').catch(function(e){ errors.push('Invest cash: '+e.message); return {}; }),
-      t212FetchAll(T212_INVEST_KEY, '/equity/history/dividends').catch(function(e){ errors.push('Invest divs: '+e.message); return []; })
-    ]).then(function(r){ results.invest={positions:r[0],cash:r[1],dividends:r[2]}; addLog('Invest: '+((Array.isArray(r[0])?r[0]:(r[0]&&r[0].items)||[]).length)+' positions, '+r[2].length+' dividends'); }),
-
-    Promise.all([
-      t212Fetch(T212_ISA_KEY, '/equity/portfolio').catch(function(e){ errors.push('ISA positions: '+e.message); return []; }),
-      t212Fetch(T212_ISA_KEY, '/equity/account/cash').catch(function(e){ errors.push('ISA cash: '+e.message); return {}; }),
-      t212FetchAll(T212_ISA_KEY, '/equity/history/dividends').catch(function(e){ errors.push('ISA divs: '+e.message); return []; })
-    ]).then(function(r){ results.isa={positions:r[0],cash:r[1],dividends:r[2]}; addLog('ISA: '+((Array.isArray(r[0])?r[0]:(r[0]&&r[0].items)||[]).length)+' positions, '+r[2].length+' dividends'); })
-  ]).then(function(){
-    processT212Data(results, errors);
-  }).catch(function(e){
-    addLog('Full sync error: '+e.message);
-    if(btn){btn.disabled=false;btn.textContent='\u21BB Sync T212';}
-  });
-}
-
-
-function processT212Data(results, errors) {
-  var btn    = document.getElementById('d-fetch-btn');
-  var status = document.getElementById('d-prices-status');
-  var syncSt = document.getElementById('sync-st');
-
-  ['invest','isa'].forEach(function(acct) {
-    var data = results[acct];
-    if (!data || !data.positions) return;
-
-    var positions = data.positions;
-    // T212 returns positions as array or {items: [...]}
-    if (!Array.isArray(positions)) positions = positions.items || [];
-
-    // Build holdings from positions
-    // Each position: { ticker, quantity, averagePrice, currentPrice, ppl, fxPpl }
-    var newHoldings = positions.map(function(p) {
-      // T212 tickers look like "LGEN_EQ" or "AAPL_US_EQ" - extract base ticker
-      var rawTicker = p.ticker || '';
-      var ticker = rawTicker.replace(/_EQ$/, '').replace(/_US_EQ$/, '').replace(/_UK_EQ$/, '').replace(/_EQ_.*$/, '').split('_')[0];
-      var name = rawTicker; // will be enriched
-      var shares = p.quantity || 0;
-      var avgPrice = p.averagePrice || 0;
-      var currPrice = p.currentPrice || avgPrice;
-      var cost = shares * avgPrice;
-
-      // Find existing holding to preserve dividend data
-      var existing = DB[acct].holdings.find(function(h){ return h.ticker===ticker; });
-      return {
-        id: existing ? existing.id : Date.now()+Math.random(),
-        ticker: ticker,
-        name: existing ? existing.name : ticker,
-        acct: acct,
-        shares: +shares.toFixed(6),
-        avgPrice: +avgPrice.toFixed(4),
-        currentPrice: +currPrice.toFixed(4),
-        cost: +cost.toFixed(2),
-        yieldPct:  existing ? existing.yieldPct  : 0,
-        annualDiv: existing ? existing.annualDiv  : 0,
-        nextPay:   existing ? existing.nextPay    : 0,
-        exDate:    existing ? existing.exDate     : '',
-        ppl:       p.ppl || 0  // T212 gives us the actual P&L!
-      };
-    }).filter(function(h){ return h.shares > 0.001; });
-
-    DB[acct].holdings = newHoldings;
-
-    // Dividend history
-    var divs = data.dividends || [];
-    if (!Array.isArray(divs)) divs = divs.items || [];
-    var seen = new Set(DB[acct].history.map(function(x){ return x.ticker+'|'+x.date+'|'+x.amount; }));
-    divs.forEach(function(d) {
-      var rawTicker = d.ticker || '';
-      var ticker = rawTicker.replace(/_EQ$/, '').replace(/_US_EQ$/, '').replace(/_UK_EQ$/, '').split('_')[0];
-      var amt  = d.amount || d.grossAmount || 0;
-      var date = (d.paidOn || d.reference || '').split('T')[0];
-      if (!date || !amt || amt <= 0) return;
-      var k = ticker+'|'+date+'|'+amt;
-      if (!seen.has(k)) {
-        DB[acct].history.push({ ticker:ticker, name:ticker, amount:amt, date:date, acct:acct });
-        seen.add(k);
-      }
-    });
-
-    // Cash balance - store as info but don't add to portfolio value
-    if (data.cash && data.cash.free !== undefined) {
-      DB[acct].cashBalance = data.cash.free || 0;
-    }
-  });
-
-  // Re-enrich all holdings with dividend data
-  recalcAll();
-  persist();
-  updateHeader();
-
-  var invCount = DB.invest.holdings.length;
-  var isaCount = DB.isa.holdings.length;
-  var divCount = DB.invest.history.length + DB.isa.history.length;
-  var msg = invCount+isaCount > 0
-    ? 'Synced ' + (invCount+isaCount) + ' positions (' + invCount + ' Invest, ' + isaCount + ' ISA)\n' +
-      divCount + ' dividend payments loaded\n' +
-      new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}) +
-      (errors.length ? '\n\nWarnings:\n' + errors.join('\n') : '')
-    : 'No positions found.\n\nErrors:\n' + errors.join('\n') +
-      '\n\nIf this keeps failing, use CSV import instead.';
-
-  if (btn)    { btn.disabled=false; btn.textContent='\u21BB Sync T212'; }
-  if (status) status.textContent = 'Last synced ' + new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
-  if (syncSt) syncSt.textContent = msg;
-
-  // Refresh current view
-  renderDash();
-  if (document.getElementById('pg-port').classList.contains('on')) renderPort();
-  if (document.getElementById('pg-cal').classList.contains('on'))  renderCal();
-  if (document.getElementById('pg-hist').classList.contains('on')) renderHist();
-}
-
-// ── SCHEDULE ──────────────────────────────────────────────────────────────────
+// â”€â”€ SCHEDULE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function buildSchedule() {
   var now = new Date(); now.setHours(0,0,0,0);
   // Window: today to 12 months ahead
@@ -1141,7 +957,7 @@ function buildSchedule() {
   return Object.keys(buckets).sort().map(function(k){ return buckets[k]; });
 }
 
-// ── NAV ───────────────────────────────────────────────────────────────────────
+// â”€â”€ NAV â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 var PAGES=['dash','port','cal','hist','proj','goal','imp'];
 var TAB_CLS={dash:'',port:'',cal:'amb',hist:'',proj:'blu',goal:'',imp:''};
 
@@ -1157,10 +973,10 @@ function go(name){
 function updateHeader(){
   var ann=totalAnn(),val=totalVal(),n=allH().length;
   document.getElementById('hv').innerHTML=fmt(ann)+'<span style="font-size:10px;color:var(--mid);font-weight:400">/yr</span>';
-  document.getElementById('hs').textContent=n?n+' holding'+(n!==1?'s':'')+' \u00b7 '+fmt(val)+' portfolio':'Tap Sync T212 to load your portfolio';
+  document.getElementById('hs').textContent=n?n+' holding'+(n!==1?'s':'')+' \u00b7 '+fmt(val)+' portfolio':'Tap Sync to load your portfolio';
 }
 
-// ── GROWTH CHART ──────────────────────────────────────────────────────────────
+// â”€â”€ GROWTH CHART â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 var chartRangeDays=30;
 function setChartRange(days){
   chartRangeDays=days;
@@ -1172,7 +988,7 @@ function saveSnapshot(force){
   var today=new Date().toISOString().split('T')[0];
   var last=DB.snapshots[DB.snapshots.length-1];
   if(!force&&last&&last.date===today)return;
-  var snap={date:today,total:Math.round(totalVal()),invest:Math.round(acctVal('invest')),isa:Math.round(acctVal('isa')),deposited:Math.round(totalCost()),gain:totalVal()-totalCost()};
+  var snap={date:today,total:Math.round(totalVal()),deposited:Math.round(totalCost()),gain:totalVal()-totalCost()};
   if(last&&last.date===today)DB.snapshots.pop();
   DB.snapshots.push(snap);
   if(DB.snapshots.length>365)DB.snapshots=DB.snapshots.slice(-365);
@@ -1186,17 +1002,17 @@ function renderGrowthChart(){
   var nowEl=document.getElementById('growth-now');
   var retEl=document.getElementById('growth-ret');
   if(!svg)return;
-  var currentGL=totalGL(),currentCost=totalCost(),currentPct=currentCost>0?currentGL/currentCost*100:0;
-  if(startEl)startEl.textContent=fmt(currentCost);
+  var gl=totalGL(),cost=totalCost(),pct=cost>0?gl/cost*100:0;
+  if(startEl)startEl.textContent=fmt(cost);
   if(nowEl)  nowEl.textContent=fmt(totalVal());
   if(retEl){
-    retEl.innerHTML='<span style="display:block;font-size:13px;font-weight:800">'+(currentGL>=0?'+':'\u2212')+'\u00a3'+Math.abs(currentGL).toLocaleString('en-GB',{minimumFractionDigits:2,maximumFractionDigits:2})+'</span>'+
-      '<span style="font-size:10px;font-weight:600">'+(currentPct>=0?'+':'')+currentPct.toFixed(2)+'%</span>';
-    retEl.style.color=currentGL>=0?'var(--grn)':'var(--red)';
+    retEl.innerHTML='<span style="display:block;font-size:13px;font-weight:800">'+(gl>=0?'+':'\u2212')+'\u00a3'+Math.abs(gl).toLocaleString('en-GB',{minimumFractionDigits:2,maximumFractionDigits:2})+'</span>'+
+      '<span style="font-size:10px;font-weight:600">'+(pct>=0?'+':'')+pct.toFixed(2)+'%</span>';
+    retEl.style.color=gl>=0?'var(--grn)':'var(--red)';
   }
   var snaps=DB.snapshots.slice();
   var today=new Date().toISOString().split('T')[0];
-  var todaySnap={date:today,total:Math.round(totalVal()),deposited:Math.round(totalCost()),gain:totalVal()-totalCost()};
+  var todaySnap={date:today,gain:gl};
   if(snaps.length&&snaps[snaps.length-1].date===today)snaps[snaps.length-1]=todaySnap;
   else snaps.push(todaySnap);
   if(chartRangeDays>0){
@@ -1204,11 +1020,11 @@ function renderGrowthChart(){
     var filtered=snaps.filter(function(s){return s.date>=cutoff.toISOString().split('T')[0];});
     if(filtered.length>1)snaps=filtered;
   }
-  var points=snaps.map(function(s){var g=s.gain!==undefined?s.gain:0;return{date:s.date,gain:g};});
+  var points=snaps.map(function(s){return{date:s.date,gain:s.gain||0};});
   if(points.length<2){
-    var col0=currentGL>=0?'#22c55e':'#ef4444';
-    svg.innerHTML='<text x="160" y="48" text-anchor="middle" fill="'+col0+'" font-size="26" font-weight="700" font-family="sans-serif">'+(currentGL>=0?'+':'\u2212')+'\u00a3'+Math.abs(currentGL).toLocaleString('en-GB',{maximumFractionDigits:0})+'</text>'+
-      '<text x="160" y="68" text-anchor="middle" fill="'+col0+'" font-size="14" font-family="sans-serif">'+(currentPct>=0?'+':'')+currentPct.toFixed(2)+'%</text>'+
+    var col0=gl>=0?'#22c55e':'#ef4444';
+    svg.innerHTML='<text x="160" y="48" text-anchor="middle" fill="'+col0+'" font-size="26" font-weight="700" font-family="sans-serif">'+(gl>=0?'+':'\u2212')+'\u00a3'+Math.abs(gl).toLocaleString('en-GB',{maximumFractionDigits:0})+'</text>'+
+      '<text x="160" y="68" text-anchor="middle" fill="'+col0+'" font-size="14" font-family="sans-serif">'+(pct>=0?'+':'')+pct.toFixed(2)+'%</text>'+
       '<text x="160" y="95" text-anchor="middle" fill="#6b7280" font-size="10" font-family="sans-serif">Sync daily to build gain/loss history</text>';
     if(xlbls)xlbls.innerHTML='';
     return;
@@ -1227,17 +1043,17 @@ function renderGrowthChart(){
   var lastGain=points[points.length-1].gain;
   var col=lastGain>=0?'#22c55e':'#ef4444';
   var area=path+' L'+lx+','+zeroY+' L'+PX+','+zeroY+' Z';
-  var gl='<line x1="'+PX+'" y1="'+zeroY+'" x2="'+(W-PX*0.3)+'" y2="'+zeroY+'" stroke="#374151" stroke-width="1.5"/>'+
+  var gridLines='<line x1="'+PX+'" y1="'+zeroY+'" x2="'+(W-PX*0.3)+'" y2="'+zeroY+'" stroke="#374151" stroke-width="1.5"/>'+
     '<text x="'+(PX-3)+'" y="'+(parseFloat(zeroY)+3)+'" text-anchor="end" fill="#6b7280" font-size="8" font-family="sans-serif">\u00a30</text>';
   [-2,-1,1,2].forEach(function(n){
     var yv=n*(range/4)+(maxG+minG)/2;if(Math.abs(yv)<range*0.05)return;
     var yp=sy(yv).toFixed(1);if(parseFloat(yp)<PY||parseFloat(yp)>PY+iH)return;
     var lbl=(yv>=0?'+':'\u2212')+'\u00a3'+(Math.abs(yv)>=1000?(Math.abs(yv)/1000).toFixed(0)+'k':Math.round(Math.abs(yv)));
-    gl+='<line x1="'+PX+'" y1="'+yp+'" x2="'+(W-PX*0.3)+'" y2="'+yp+'" stroke="#1f2937" stroke-width="1"/>'+
+    gridLines+='<line x1="'+PX+'" y1="'+yp+'" x2="'+(W-PX*0.3)+'" y2="'+yp+'" stroke="#1f2937" stroke-width="1"/>'+
       '<text x="'+(PX-3)+'" y="'+(parseFloat(yp)+3)+'" text-anchor="end" fill="#4b5563" font-size="8" font-family="sans-serif">'+lbl+'</text>';
   });
   svg.innerHTML='<defs><linearGradient id="gg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="'+col+'" stop-opacity=".3"/><stop offset="100%" stop-color="'+col+'" stop-opacity=".05"/></linearGradient></defs>'+
-    gl+'<path d="'+area+'" fill="url(#gg2)"/>'+
+    gridLines+'<path d="'+area+'" fill="url(#gg2)"/>'+
     '<path d="'+path+'" stroke="'+col+'" stroke-width="2.5" fill="none" stroke-linejoin="round" stroke-linecap="round"/>'+
     '<circle cx="'+lx+'" cy="'+sy(lastGain).toFixed(1)+'" r="4" fill="'+col+'"/>';
   if(xlbls){
@@ -1250,7 +1066,7 @@ function renderGrowthChart(){
   }
 }
 
-// ── DASHBOARD ─────────────────────────────────────────────────────────────────
+// â”€â”€ DASHBOARD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function renderDash(){
   saveSnapshot(false);
   renderGrowthChart();
@@ -1263,12 +1079,12 @@ function renderDash(){
   document.getElementById('d-mon').textContent=fmt(ann/12);
   document.getElementById('d-inv').textContent=fmt(cost);
   document.getElementById('d-yld').textContent=cost>0?n2(ann/cost*100)+'%':'-';
-  // Bank balance
+  // Bank
   var bbEl=document.getElementById('d-bank-total');
   var blblEl=document.getElementById('d-bank-label-display');
   var binpEl=document.getElementById('bank-balance');
   var lblinpEl=document.getElementById('bank-label');
-  if(bbEl){bbEl.textContent=fmt(DB.bankBalance||0);bbEl.style.color=(DB.bankBalance||0)>0?'var(--blu)':'var(--mid)';}
+  if(bbEl)bbEl.textContent=fmt(DB.bankBalance||0);
   if(blblEl)blblEl.textContent=DB.bankLabel||'No account set';
   if(binpEl&&!binpEl.value&&DB.bankBalance)binpEl.value=DB.bankBalance;
   if(lblinpEl&&!lblinpEl.value&&DB.bankLabel)lblinpEl.value=DB.bankLabel;
@@ -1298,7 +1114,7 @@ function renderDash(){
   var invAnn=acctAnn('invest'),isaAnn=acctAnn('isa'),invVal=acctVal('invest'),isaVal=acctVal('isa');
   var invCost=acctCost('invest'),isaCost=acctCost('isa'),invGL=invVal-invCost,isaGL=isaVal-isaCost;
   var splitEl=document.getElementById('d-split');
-  if(!allH().length){splitEl.innerHTML='<div style="color:var(--mid);font-size:12px">Tap \u21BB Sync T212 above to load your portfolio</div>';}
+  if(!allH().length){splitEl.innerHTML='<div style="color:var(--mid);font-size:12px">Tap \u21BB Sync below to load your portfolio</div>';}
   else{
     var pInv=ann>0?invAnn/ann*100:0,pIsa=ann>0?isaAnn/ann*100:0;
     splitEl.innerHTML=
@@ -1329,7 +1145,7 @@ function renderDash(){
   }).join('')||'<div style="color:var(--mid);font-size:12px">No upcoming payments found</div>';
 }
 
-// ── PORTFOLIO ─────────────────────────────────────────────────────────────────
+// â”€â”€ PORTFOLIO â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function addHolding() {
   var ticker=(document.getElementById('f-tk').value||'').trim().toUpperCase();
   if (!ticker){alert('Ticker required');return;}
@@ -1374,7 +1190,7 @@ function posRow(h){
       '<div class="pos-title">'+
         '<div class="pos-name">'+h.name+'</div>'+
         '<div class="pos-sub">'+(h.shares>0?n2(h.shares)+' shares':'')+
-          (h.avgPrice>0?' · avg '+fmt(h.avgPrice):'')+'</div>'+
+          (h.avgPrice>0?' Â· avg '+fmt(h.avgPrice):'')+'</div>'+
       '</div>'+
       '<span class="pos-badge '+(isa?'isa':'inv')+'">'+(isa?'ISA':'INVEST')+'</span>'+
       '<button class="del-btn" data-acct="'+h.acct+'" data-id="'+h.id+'" onclick="delHolding(this.dataset.acct,this.dataset.id)">&#10005;</button>'+
@@ -1417,11 +1233,11 @@ function renderPort(){
     document.getElementById(pfx+'-cnt').textContent=hs.length+' position'+(hs.length!==1?'s':'');
     document.getElementById(pfx+'-tot').textContent=hs.length?fmt(val)+' \u00b7 '+(gl2>=0?'+':'-')+fmt(Math.abs(gl2))+' \u00b7 '+fmt(ann)+'/yr':'';
     document.getElementById(pfx+'-list').innerHTML=hs.length?hs.map(posRow).join(''):
-      '<div class="empty"><div class="ei">'+(acct==='invest'?'\uD83D\uDCCA':'\uD83D\uDEE1\uFE0F')+'</div><p>Tap Sync T212 on Dashboard</p></div>';
+      '<div class="empty"><div class="ei">'+(acct==='invest'?'\uD83D\uDCCA':'\uD83D\uDEE1\uFE0F')+'</div><p>Tap Sync on Dashboard</p></div>';
   });
 }
 
-// ── CALENDAR ──────────────────────────────────────────────────────────────────
+// â”€â”€ CALENDAR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function renderCal(){
   var sched=buildSchedule();
   var now=new Date();now.setHours(0,0,0,0);
@@ -1439,7 +1255,7 @@ function renderCal(){
   var upcoming=[];
   sched.forEach(function(b){b.items.forEach(function(i){if(i.date>=now)upcoming.push(i);});});
   upcoming.sort(function(a,b){return a.date-b.date;});
-  if(!upcoming.length){body.innerHTML='<div class="empty"><div class="ei">\uD83D\uDCC5</div><p>Sync T212 to see upcoming payments</p></div>';return;}
+  if(!upcoming.length){body.innerHTML='<div class="empty"><div class="ei">\uD83D\uDCC5</div><p>Tap Sync to see upcoming payments</p></div>';return;}
   var months={};
   upcoming.forEach(function(i){
     var key=i.date.getFullYear()+'-'+String(i.date.getMonth()+1).padStart(2,'0');
@@ -1458,13 +1274,13 @@ function renderCal(){
   }).join('');
 }
 
-// ── HISTORY ───────────────────────────────────────────────────────────────────
+// â”€â”€ HISTORY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function renderHist(){
   var all=allHist().slice().sort(function(a,b){return new Date(b.date)-new Date(a.date);});
   document.getElementById('ht').textContent=fmt(all.reduce(function(s,h){return s+h.amount;},0));
   document.getElementById('hc').textContent=all.length;
   var body=document.getElementById('hist-body');
-  if(!all.length){body.innerHTML='<div class="empty"><div class="ei">\uD83D\uDCDC</div><p>Sync T212 to see dividend history</p></div>';return;}
+  if(!all.length){body.innerHTML='<div class="empty"><div class="ei">\uD83D\uDCDC</div><p>Tap Sync to see dividend history</p></div>';return;}
   body.innerHTML=all.map(function(h){var isa=h.acct==='isa';
     return '<div class="hist-row"><div class="hist-date">'+fdate(h.date)+'</div>'+
       '<div class="hist-info"><div class="hist-tk">'+h.ticker+'<span class="pos-badge '+(isa?'isa':'inv')+'" style="margin-left:5px">'+(isa?'ISA':'INV')+'</span></div>'+
@@ -1473,7 +1289,7 @@ function renderHist(){
   }).join('');
 }
 
-// ── PROJECTION ────────────────────────────────────────────────────────────────
+// â”€â”€ PROJECTION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function toggleDrip(){
   dripOn=!dripOn;DB.drip=dripOn;persist();
   document.getElementById('drip-tog').classList.toggle('on',dripOn);
@@ -1485,7 +1301,7 @@ function toggleDrip(){
 function renderProj(){
   var madd=parseInt(document.getElementById('p-a').value)||0;
   var yrs=parseInt(document.getElementById('p-y').value)||10;
-  document.getElementById('p-al').textContent='£'+madd;
+  document.getElementById('p-al').textContent='Â£'+madd;
   document.getElementById('p-yl').textContent=yrs+' year'+(yrs!==1?'s':'');
   document.getElementById('p-yn').textContent=yrs;
   document.getElementById('p-el').textContent=yrs+'yr';
@@ -1534,7 +1350,7 @@ function renderProj(){
     var col=isCur?'var(--amb)':'var(--grn)';
     var op=isCur||isHigh?'1':'0.55';
     return '<div class="bw" style="position:relative">'+
-      '<div style="font-size:7px;color:var(--mid);font-variant-numeric:tabular-nums;margin-bottom:2px;text-align:center">'+(b.total>0?'£'+Math.round(b.total):'')+'</div>'+
+      '<div style="font-size:7px;color:var(--mid);font-variant-numeric:tabular-nums;margin-bottom:2px;text-align:center">'+(b.total>0?'Â£'+Math.round(b.total):'')+'</div>'+
       '<div class="bf" style="height:'+h+'px;background:'+col+';opacity:'+op+'"></div>'+
     '</div>';
   }).join('');
@@ -1549,7 +1365,7 @@ function renderProj(){
   }).join('')+(yrs>15?'<tr><td colspan="4" style="color:var(--mid);font-size:10px;padding-top:6px">+'+(yrs-15)+' more years</td></tr>':'');
 }
 
-// ── GOALS ─────────────────────────────────────────────────────────────────────
+// â”€â”€ GOALS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function saveGoal(){
   DB.goalMonthly=parseFloat(document.getElementById('goal-monthly').value)||0;
   persist();renderGoal();
@@ -1589,7 +1405,7 @@ function renderGoal(){
     return '<div style="margin-bottom:10px">'+
       '<div style="display:flex;justify-content:space-between;margin-bottom:4px">'+
         '<span style="font-size:12px;font-weight:600;color:'+(done?'var(--grn)':'var(--txt)')+'">'+
-          (done?'✓ ':'')+m.label+'</span>'+
+          (done?'âœ“ ':'')+m.label+'</span>'+
         '<span style="font-size:12px;font-variant-numeric:tabular-nums;color:'+(done?'var(--grn)':'var(--mid)')+'">'+fmt(m.amount)+'/mo</span>'+
       '</div>'+
       '<div style="background:var(--bord);border-radius:4px;height:6px;overflow:hidden">'+
@@ -1618,142 +1434,7 @@ function renderGoal(){
     }).join('');
 }
 
-// ── LIVE PRICES (Finnhub) ─────────────────────────────────────────────────────
-function getYFTicker(h){
-  var tk=h.ticker.trim().toUpperCase();
-  if(tk.includes('.'))return tk;
-  var us=['AAPL','MSFT','GOOGL','AMZN','META','TSLA','NVDA','JPM','PLD','BEPC',
-          'NVO','NOVO','O','REXR','VST','KLAC','ASML','FSLR','LLY','PLTR',
-          'HOOD','SOFI','VERX','WINC','GAW'];
-  if(us.indexOf(tk)>-1)return tk;
-  return tk+'.L';
-}
-
-function fetchFinnhub(ticker,cb){
-  fetch('https://finnhub.io/api/v1/quote?symbol='+encodeURIComponent(ticker)+'&token='+FINN_KEY)
-    .then(function(r){return r.json();}).then(function(data){
-      var price=data&&(data.c||data.pc);
-      if(price&&price>0)cb(null,price,ticker);else cb('no data');
-    }).catch(function(e){cb(e.message||'error');});
-}
-
-function applyPrice(h,price,ticker){
-  var gbpPrice=price;
-  if(ticker.endsWith('.L')&&price>10){
-    var avgP=h.avgPrice||0;
-    if(avgP>0&&price>avgP*50)gbpPrice=price/100;
-    else if(avgP<20&&price>100)gbpPrice=price/100;
-  }
-  h.currentPrice=+gbpPrice.toFixed(4);h.priceManual=false;
-}
-
-function fetchPrices(){
-  var holdings=allH();
-  if(!holdings.length){var pl=document.getElementById('prices-log');if(pl)pl.textContent='No holdings.';return;}
-  var btn=document.getElementById('fetch-btn');
-  var status=document.getElementById('prices-status');
-  var log=document.getElementById('prices-log');
-  if(btn){btn.disabled=true;btn.textContent='Fetching...';}
-  if(status)status.textContent='';
-  if(log)log.textContent='Fetching '+holdings.length+' prices...';
-  var updated=0,failed=0,failedList=[],pending=holdings.length;
-  function done(){
-    persist();updateHeader();
-    if(btn){btn.disabled=false;btn.textContent='\u21BB Refresh Live Prices';}
-    if(status)status.textContent='('+updated+' updated, '+failed+' failed)';
-    if(log)log.textContent=updated+' updated'+(failedList.length?'\nFailed: '+failedList.join(', '):'');
-    if(document.getElementById('pg-port').classList.contains('on'))renderPort();
-    if(document.getElementById('pg-dash').classList.contains('on'))renderDash();
-  }
-  holdings.forEach(function(h){
-    fetchFinnhub(getYFTicker(h),function(err,price,tk){
-      if(!err&&price){applyPrice(h,price,tk);updated++;}
-      else{failed++;failedList.push(h.ticker);}
-      pending--;if(pending<=0)done();
-    });
-  });
-}
-
-// ── LIVE DIVIDEND DATA (Finnhub) ──────────────────────────────────────────────
-function fetchDividendData() {
-  var btn = document.getElementById('div-fetch-btn');
-  var st  = document.getElementById('div-fetch-st');
-  var holdings = allH();
-  if (!holdings.length) { if(st) st.textContent='No holdings to update.'; return; }
-  if (btn) { btn.disabled=true; btn.textContent='Fetching...'; }
-  if (st)  st.textContent = 'Fetching dividend data for ' + holdings.length + ' holdings...';
-  var updated=0, failed=0, skipped=0, pending=holdings.length;
-  var log = [];
-  var today = new Date();
-  var fromDate = new Date(today); fromDate.setFullYear(fromDate.getFullYear()-1);
-  var toDate   = new Date(today); toDate.setFullYear(toDate.getFullYear()+2);
-  var fromStr  = fromDate.toISOString().split('T')[0];
-  var toStr    = toDate.toISOString().split('T')[0];
-  function done() {
-    persist();
-    if (btn) { btn.disabled=false; btn.textContent='\u21BB Refresh Dividend Data'; }
-    if (st)  st.textContent = updated+' updated, '+skipped+' unchanged, '+failed+' failed\n'+log.join('\n');
-    recalcAll();
-    if (document.getElementById('pg-cal').classList.contains('on'))  renderCal();
-    if (document.getElementById('pg-dash').classList.contains('on')) renderDash();
-    if (document.getElementById('pg-proj').classList.contains('on')) renderProj();
-  }
-  holdings.forEach(function(h) {
-    var ticker = getYFTicker(h);
-    var url = 'https://finnhub.io/api/v1/stock/dividend?symbol='
-      + encodeURIComponent(ticker) + '&from=' + fromStr + '&to=' + toStr
-      + '&token=d80o4thr01qt5k5vlqc0d80o4thr01qt5k5vlqcg';
-    fetch(url)
-      .then(function(r){ return r.json(); })
-      .then(function(data) {
-        if (!Array.isArray(data) || !data.length) { skipped++; return; }
-        data.sort(function(a,b){ return new Date(a.date)-new Date(b.date); });
-        var future = data.filter(function(d){ return new Date(d.payDate||d.date) >= today; });
-        var past   = data.filter(function(d){ return new Date(d.payDate||d.date) <  today; });
-        var oneYrAgo = new Date(today); oneYrAgo.setFullYear(oneYrAgo.getFullYear()-1);
-        var lastYr   = past.filter(function(d){ return new Date(d.payDate||d.date) >= oneYrAgo; });
-        var annualPerShare = 0;
-        if (lastYr.length > 0) {
-          var sumPaid = lastYr.reduce(function(s,d){ return s+(d.amount||0); }, 0);
-          var firstD  = new Date(lastYr[0].date);
-          var months  = Math.max(1,(today-firstD)/(1000*60*60*24*30.5));
-          annualPerShare = sumPaid*(12/Math.min(months,12));
-        } else if (data.length > 0) {
-          var amounts = data.map(function(d){ return d.amount||0; }).filter(function(v){ return v>0; });
-          if (!amounts.length) { skipped++; return; }
-          var avg = amounts.reduce(function(s,v){return s+v;},0)/amounts.length;
-          var freq2 = 4;
-          if (data.length >= 2) {
-            var diffs2=[];
-            for (var i2=1;i2<Math.min(data.length,5);i2++) diffs2.push((new Date(data[i2].date)-new Date(data[i2-1].date))/(1000*60*60*24));
-            var ad2=diffs2.reduce(function(s,v){return s+v;},0)/diffs2.length;
-            freq2 = ad2<45?12:ad2<100?4:ad2<200?2:1;
-          }
-          annualPerShare = avg*freq2;
-        }
-        var freq=4;
-        if (data.length >= 2) {
-          var diffs=[]; for(var i=1;i<Math.min(data.length,5);i++) diffs.push((new Date(data[i].date)-new Date(data[i-1].date))/(1000*60*60*24));
-          var ad=diffs.reduce(function(s,v){return s+v;},0)/diffs.length;
-          freq=ad<45?12:ad<100?4:ad<200?2:1;
-        }
-        var nextPmt = future.length ? future[0] : (past.length ? past[past.length-1] : null);
-        if (annualPerShare > 0 && h.shares > 0) {
-          h.annualDiv = +(h.shares*annualPerShare).toFixed(2);
-          h.nextPay   = nextPmt ? +(h.shares*(nextPmt.amount||annualPerShare/freq)).toFixed(2) : +(h.annualDiv/freq).toFixed(2);
-          h.yieldPct  = h.cost>0 ? +(h.annualDiv/h.cost*100).toFixed(2) : h.yieldPct;
-          if (nextPmt&&nextPmt.exDate) h.exDate=nextPmt.exDate;
-          else if (nextPmt&&nextPmt.date) h.exDate=nextPmt.date;
-          updated++;
-          log.push('\u2713 '+h.ticker+': \u00a3'+h.annualDiv.toFixed(2)+'/yr');
-        } else { skipped++; }
-      })
-      .catch(function(e){ failed++; log.push('\u2715 '+h.ticker+': '+(e.message||'error')); })
-      .finally(function(){ pending--; if(pending<=0) done(); });
-  });
-}
-
-// ── CSV IMPORT (fallback) ─────────────────────────────────────────────────────
+// â”€â”€ IMPORT (CSV fallback) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function setAcct(a){
   importAcct=a;
   document.getElementById('btn-inv').classList.toggle('on',a==='invest');
@@ -1957,33 +1638,24 @@ function handleFile(input){
 }
 function handlePaste(){var t=document.getElementById('paste-box').value;if(!t.trim()){impSt('Paste CSV text first.','err');return;}ingest(t);}
 function clearHist(){if(!confirm('Clear all dividend history?'))return;DB.invest.history=[];DB.isa.history=[];persist();impSt('History cleared.','ok');}
+
 function clearAll(){
   if(!confirm('Delete ALL data?'))return;
   DB={invest:{holdings:[],history:[]},isa:{holdings:[],history:[]},drip:true,goalMonthly:0,bankBalance:0,bankLabel:'',snapshots:[]};
   persist();updateHeader();go('dash');
-  var el=document.getElementById('sync-st');if(el)el.textContent='All data cleared.';
 }
 
 function recalcAll(){
-  var count=0;
   ['invest','isa'].forEach(function(acct){
     DB[acct].holdings.forEach(function(h){
       var divHist=DB[acct].history.filter(function(x){return x.ticker===h.ticker;});
-      enrichHolding(h,divHist,h.cost);count++;
+      enrichHolding(h,divHist,h.cost);
     });
   });
   persist();updateHeader();
-  var el=document.getElementById('recalc-st');
-  if(el){el.textContent='Recalculated '+count+' holdings.';el.style.color='var(--grn)';}
-  setTimeout(function(){var e=document.getElementById('recalc-st');if(e)e.textContent='';},3000);
 }
 
-// PWA
-var _installPrompt=null;
-window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();_installPrompt=e;var b=document.getElementById('install-btn');if(b)b.style.display='block';});
-function doInstall(){if(_installPrompt){_installPrompt.prompt();_installPrompt=null;}}
-
-// ── INIT ──────────────────────────────────────────────────────────────────────
+// â”€â”€ INIT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 hydrate();
 dripOn=DB.drip;
 if(!dripOn){
@@ -1995,7 +1667,6 @@ if(!dripOn){
 recalcAll();
 updateHeader();
 renderDash();
-
 </script>
 </body>
 </html>
