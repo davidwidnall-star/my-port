@@ -1,0 +1,2001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="theme-color" content="#0f1117">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="DivTrack">
+<title>DivTrack</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0f1117;--surf:#161b25;--card:#1c2130;--bord:#252d3d;
+  --grn:#22c55e;--gdim:#22c55e18;--gbord:#22c55e33;
+  --amb:#f59e0b;--adim:#f59e0b18;--abord:#f59e0b33;
+  --blu:#3b82f6;--bdim:#3b82f618;--bbord:#3b82f633;
+  --red:#ef4444;--rdim:#ef444418;--rbord:#ef444433;
+  --txt:#e2e8f0;--mid:#64748b;--lit:#94a3b8;
+}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px}
+body{max-width:480px;margin:0 auto;display:flex;flex-direction:column;height:100dvh}
+
+/* Header */
+#hdr{background:var(--surf);border-bottom:1px solid var(--bord);padding:12px 16px 0;flex-shrink:0}
+.hdr-row{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px}
+.logo{font-size:17px;font-weight:800;letter-spacing:-.5px;color:#fff}
+.logo b{color:var(--grn)}
+.hdr-stats{text-align:right}
+.hdr-val{font-size:18px;font-weight:800;color:var(--grn);font-variant-numeric:tabular-nums;line-height:1}
+.hdr-sub{font-size:10px;color:var(--mid);margin-top:3px}
+.tabs{display:flex;gap:5px;overflow-x:auto;padding-bottom:10px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.tabs::-webkit-scrollbar{display:none}
+.tab{white-space:nowrap;padding:6px 13px;border-radius:20px;font-size:12px;font-weight:700;border:1.5px solid var(--bord) !important;background:transparent !important;color:var(--lit) !important;cursor:pointer;transition:.15s;font-family:inherit}
+.tab.on{background:var(--grn) !important;color:#0a1a0a !important;border-color:var(--grn) !important}
+.tab.on.amb{background:var(--amb) !important;color:#1a1000 !important;border-color:var(--amb) !important}
+.tab.on.blu{background:var(--blu) !important;color:#fff !important;border-color:var(--blu) !important}
+
+/* Content */
+.pg{display:none;flex:1;overflow-y:auto;padding:14px 14px 80px;-webkit-overflow-scrolling:touch}
+.pg.on{display:block}
+
+/* Cards */
+.card{background:var(--card);border:1px solid var(--bord);border-radius:14px;padding:13px;margin-bottom:10px}
+.clbl{font-size:10px;text-transform:uppercase;letter-spacing:.9px;color:var(--mid);margin-bottom:10px}
+
+/* Grid stats */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px}
+.g4{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.sc{background:var(--card);border:1px solid var(--bord);border-radius:12px;padding:11px}
+.sl{font-size:9px;text-transform:uppercase;letter-spacing:.9px;color:var(--mid);margin-bottom:4px}
+.sv{font-size:17px;font-weight:800;font-variant-numeric:tabular-nums}
+.sv.g{color:var(--grn)}.sv.a{color:var(--amb)}.sv.b{color:var(--blu)}.sv.r{color:var(--red)}
+.ssub{font-size:10px;color:var(--mid);margin-top:2px;font-variant-numeric:tabular-nums}
+
+/* Position card */
+.pos{border-bottom:1px solid var(--bord);padding:11px 0}
+.pos:last-child{border-bottom:none}
+.pos-head{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+.avatar{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0;font-family:'SF Mono',monospace}
+.avatar.inv{background:var(--gdim);color:var(--grn);border:1px solid var(--gbord)}
+.avatar.isa{background:var(--adim);color:var(--amb);border:1px solid var(--abord)}
+.pos-title{flex:1;min-width:0}
+.pos-name{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pos-sub{font-size:10px;color:var(--mid);margin-top:1px}
+.pos-badge{font-size:9px;font-weight:700;padding:2px 7px;border-radius:8px}
+.pos-badge.inv{background:var(--gdim);color:var(--grn)}
+.pos-badge.isa{background:var(--adim);color:var(--amb)}
+.del-btn{background:none;border:none;color:var(--bord);cursor:pointer;padding:4px 6px;font-size:16px;line-height:1;flex-shrink:0}
+.del-btn:active{color:var(--red)}
+
+/* Position grid */
+.pos-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-bottom:5px}
+.pos-div-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:5px}
+.pc{background:var(--surf);border-radius:7px;padding:6px 8px}
+.pcl{font-size:8px;color:var(--mid);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
+.pcv{font-size:12px;font-weight:700;font-variant-numeric:tabular-nums}
+.pcv.g{color:var(--grn)}.pcv.a{color:var(--amb)}.pcv.r{color:var(--red)}.pcv.b{color:var(--blu)}
+.gain-bar{height:3px;border-radius:2px;margin-top:4px}
+
+/* Bar chart */
+.bchart{display:flex;align-items:flex-end;gap:3px;height:76px}
+.bw{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;height:100%;justify-content:flex-end}
+.bf{width:100%;border-radius:3px 3px 0 0;min-height:2px}
+.bl{font-size:7.5px;color:var(--mid)}
+
+/* Calendar */
+.cal-card{background:var(--card);border:1px solid var(--bord);border-radius:12px;padding:12px;margin-bottom:10px}
+.cal-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.cal-mo{font-size:13px;font-weight:700}
+.cal-tot{font-size:13px;font-weight:800;color:var(--grn);font-variant-numeric:tabular-nums}
+.cal-row{display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:1px solid var(--bord)}
+.cal-row:last-child{border-bottom:none}
+.cal-date{font-size:10px;color:var(--mid);min-width:60px;font-variant-numeric:tabular-nums}
+.cal-tk{font-size:12px;font-weight:700;min-width:38px}
+.cal-name{flex:1;font-size:11px;color:var(--lit);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cal-amt{font-size:13px;font-weight:800;color:var(--grn);font-variant-numeric:tabular-nums}
+
+/* History */
+.hist-row{display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid var(--bord)}
+.hist-row:last-child{border-bottom:none}
+.hist-date{font-size:10px;color:var(--mid);min-width:72px;font-variant-numeric:tabular-nums}
+.hist-info{flex:1;min-width:0}
+.hist-tk{font-size:12px;font-weight:700}
+.hist-name{font-size:10px;color:var(--mid)}
+.hist-amt{font-size:13px;font-weight:800;font-variant-numeric:tabular-nums}
+
+/* Progress */
+.prog{height:5px;background:var(--bord);border-radius:3px;overflow:hidden;margin-top:4px}
+.pf{height:100%;border-radius:3px}
+
+/* Projection */
+.slider-row{margin-bottom:14px}
+.slider-top{display:flex;justify-content:space-between;margin-bottom:4px;font-size:11px}
+.slider-top span:first-child{text-transform:uppercase;letter-spacing:.8px;color:var(--mid)}
+.slider-top span:last-child{font-weight:800;font-variant-numeric:tabular-nums}
+input[type=range]{-webkit-appearance:none;width:100%;height:4px;border-radius:2px;background:var(--bord);outline:none;padding:0;border:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--grn);cursor:pointer;box-shadow:0 0 6px #22c55e55}
+.rends{display:flex;justify-content:space-between;font-size:9px;color:var(--mid);margin-top:3px;font-variant-numeric:tabular-nums}
+.drip-row{display:flex;align-items:center;justify-content:space-between;background:var(--surf);border:1.5px solid var(--bord);border-radius:11px;padding:11px 13px;margin-bottom:10px;cursor:pointer}
+.drip-row.on{border-color:var(--gbord);background:var(--gdim)}
+.tog{width:42px;height:24px;border-radius:12px;background:var(--bord);position:relative;transition:.2s;flex-shrink:0}
+.tog.on{background:var(--grn)}
+.tog::after{content:'';width:18px;height:18px;border-radius:50%;background:#fff;position:absolute;top:3px;left:3px;transition:.2s;box-shadow:0 1px 4px #0006}
+.tog.on::after{left:21px}
+.ptable{width:100%;border-collapse:collapse}
+.ptable th{font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--mid);text-align:left;padding-bottom:7px;border-bottom:1px solid var(--bord)}
+.ptable td{padding:6px 0;font-size:11px;border-bottom:1px solid #1c213088;font-variant-numeric:tabular-nums}
+.ptable td:nth-child(1){color:var(--mid)}
+.ptable td:nth-child(2){color:var(--grn);font-weight:700}
+.ptable td:nth-child(3){color:var(--amb)}
+.ptable td:nth-child(4){color:var(--lit)}
+.psvg{width:100%;overflow:visible;display:block}
+
+/* Form */
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.frow3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px}
+.frow4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-bottom:8px}
+.fg label{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--mid);display:block;margin-bottom:4px}
+input,select,textarea{width:100%;background:var(--surf);border:1.5px solid var(--bord);border-radius:9px;color:var(--txt);font-size:13px;padding:9px 11px;outline:none;font-family:inherit}
+input:focus,select:focus{border-color:var(--grn)}
+input::placeholder{color:var(--mid)}
+select option{background:var(--card)}
+.btn{width:100%;background:var(--grn);color:#071207;border:none;border-radius:10px;padding:12px;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;margin-top:4px}
+.btn:active{opacity:.85}
+.btn.sec{background:var(--surf);color:var(--txt);border:1.5px solid var(--bord)}
+.btn.warn{background:var(--rdim);color:var(--red);border:1.5px solid var(--rbord)}
+.btn.amb{background:var(--amb);color:#1a1000}
+
+/* Import */
+.cr-btn{padding:3px 8px;border-radius:6px;border:1px solid var(--bord);background:none;color:var(--mid);font-size:10px;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s}
+.cr-btn.cr-on{background:var(--grn);color:var(--bg);border-color:var(--grn)}
+.filelbl{display:flex;flex-direction:column;align-items:center;gap:8px;padding:22px;background:var(--surf);border:2px dashed var(--bord);border-radius:12px;cursor:pointer;text-align:center;margin-bottom:10px;transition:.15s}
+.filelbl:active{border-color:var(--grn);background:var(--gdim)}
+.filelbl input{display:none}
+.filelbl .fi{font-size:30px}
+.filelbl .ft{font-size:12px;color:var(--mid);line-height:1.6}
+.filelbl .ft strong{color:var(--grn)}
+#imp-st{margin-top:10px;padding:10px 12px;border-radius:9px;font-size:11px;line-height:1.6;display:block;min-height:36px;background:var(--surf);border:1px solid var(--bord);color:var(--mid);white-space:pre-wrap}
+#imp-st.ok{background:var(--gdim);border-color:var(--gbord);color:var(--grn)}
+#imp-st.err{background:var(--rdim);border-color:var(--rbord);color:var(--red)}
+
+/* Acct toggle */
+.acct-toggle{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.acct-btn{padding:11px;border-radius:9px;border:1.5px solid var(--bord);background:none;color:var(--mid);font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:.15s}
+.acct-btn.inv.on{border-color:var(--grn);background:var(--gdim);color:var(--grn)}
+.acct-btn.isa.on{border-color:var(--amb);background:var(--adim);color:var(--amb)}
+
+/* Empty */
+.empty{text-align:center;padding:36px 16px;color:var(--mid)}
+.empty .ei{font-size:36px;margin-bottom:10px}
+.empty p{font-size:12px;line-height:1.7}
+
+/* Section header */
+.sec-hd{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.sec-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px}
+.sec-lbl.g{color:var(--grn)}.sec-lbl.a{color:var(--amb)}
+.sec-tot{font-size:12px;font-weight:800;font-variant-numeric:tabular-nums;margin-left:auto}
+
+/* Tip box */
+.tip{background:var(--gdim);border:1px solid var(--gbord);border-radius:10px;padding:11px 13px;font-size:11px;color:var(--lit);line-height:1.8;margin-bottom:12px}
+.tip strong{color:var(--grn)}
+.tip.amb{background:var(--adim);border-color:var(--abord)}
+.tip.amb strong{color:var(--amb)}
+</style>
+</head>
+<body>
+
+<div id="hdr">
+  <div class="hdr-row">
+    <div class="logo"><b>&#9672;</b> DivTrack</div>
+    <div class="hdr-stats">
+      <div class="hdr-val" id="hv">&#163;0.00<span style="font-size:10px;color:var(--mid);font-weight:400">/yr</span></div>
+      <div class="hdr-sub" id="hs">Tap Sync to load your portfolio</div>
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab on"  onclick="go('dash')">Dashboard</button>
+    <button class="tab"     onclick="go('port')">Portfolio</button>
+    <button class="tab"     onclick="go('cal')">Calendar</button>
+    <button class="tab"     onclick="go('hist')">History</button>
+    <button class="tab"     onclick="go('proj')">Projection</button>
+    <button class="tab"     onclick="go('goal')">Goals</button>
+    <button class="tab"     onclick="go('imp')">Import</button>
+  </div>
+  <div style="text-align:right;font-size:9px;color:var(--mid);padding:0 2px 5px;opacity:0.5">scroll tabs &rsaquo;</div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="pg on" id="pg-dash">
+  <div class="g2">
+    <div class="sc"><div class="sl">Portfolio Value</div><div class="sv g" id="d-val">&#163;0.00</div><div class="ssub" id="d-val-sub"></div></div>
+    <div class="sc"><div class="sl">Total Gain/Loss</div><div class="sv" id="d-gl">&#8212;</div><div class="ssub" id="d-glp"></div></div>
+    <div class="sc"><div class="sl">Annual Income</div><div class="sv a" id="d-ann">&#163;0.00</div></div>
+    <div class="sc"><div class="sl">Monthly Avg</div><div class="sv" id="d-mon">&#163;0.00</div></div>
+  </div>
+  <div class="g2" style="margin-top:-2px">
+    <div class="sc"><div class="sl">Invested</div><div class="sv" id="d-inv">&#163;0.00</div></div>
+    <div class="sc"><div class="sl">Yield on Cost</div><div class="sv b" id="d-yld">&#8212;</div></div>
+  </div>
+
+  <div class="card" style="padding:12px 14px;margin-bottom:10px">
+    <div class="clbl" style="margin-bottom:10px">Bank Balance <span style="color:var(--mid);font-weight:400;text-transform:none;letter-spacing:0;font-size:9px">manually updated &middot; not in portfolio value</span></div>
+    <div style="display:flex;gap:8px;align-items:stretch">
+      <div style="flex:1;background:var(--surf);border-radius:10px;padding:10px">
+        <div style="font-size:9px;color:var(--mid);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">Account</div>
+        <input id="bank-label" type="text" placeholder="e.g. Barclays"
+          style="width:100%;background:transparent;border:none;border-bottom:1px solid var(--bord);padding:3px 0;font-size:12px;color:var(--txt);outline:none;font-family:inherit"
+          oninput="DB.bankLabel=this.value;persist();">
+      </div>
+      <div style="flex:1;background:var(--surf);border-radius:10px;padding:10px">
+        <div style="font-size:9px;color:var(--mid);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">Balance</div>
+        <div style="display:flex;align-items:center;gap:4px">
+          <span style="color:var(--blu);font-size:14px;font-weight:700">&#163;</span>
+          <input id="bank-balance" type="number" min="0" step="0.01" placeholder="0.00"
+            style="flex:1;background:transparent;border:none;border-bottom:1px solid var(--bord);padding:3px 0;font-size:16px;font-weight:800;color:var(--blu);outline:none;font-family:inherit"
+            oninput="DB.bankBalance=parseFloat(this.value)||0;persist();renderDash();">
+        </div>
+      </div>
+      <div style="flex:1;background:var(--surf);border-radius:10px;padding:10px;text-align:center">
+        <div style="font-size:9px;color:var(--mid);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">Total Cash</div>
+        <div style="font-size:16px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--blu)" id="d-bank-total">&#163;0.00</div>
+        <div style="font-size:9px;color:var(--mid);margin-top:2px" id="d-bank-label-display">No account set</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="clbl">Projected Monthly Income<span id="d-drip-lbl" style="color:var(--grn);font-weight:400"></span></div>
+    <div class="bchart" id="d-bars"></div>
+    <div style="display:flex;gap:3px;margin-top:5px" id="d-blbls"></div>
+    <div style="display:flex;justify-content:space-between;margin-top:8px;padding-top:8px;border-top:1px solid var(--bord)">
+      <span style="font-size:10px;color:var(--mid)">Next 12 months</span>
+      <span style="font-size:12px;font-weight:800;color:var(--grn);font-variant-numeric:tabular-nums" id="d-proj-total">&#163;0.00</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="clbl">Invest vs ISA</div>
+    <div id="d-split"><div style="color:var(--mid);font-size:12px">Tap Sync T212 to load your portfolio</div></div>
+  </div>
+
+  <div class="card">
+    <div class="clbl">Upcoming Payments</div>
+    <div id="d-next"><div style="color:var(--mid);font-size:12px">Sync your portfolio to see upcoming payments</div></div>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+      <div class="clbl" style="margin-bottom:0">Portfolio Gain / Loss</div>
+      <div style="display:flex;gap:4px">
+        <button onclick="setChartRange(30)"  class="cr-btn cr-on" data-r="30">1M</button>
+        <button onclick="setChartRange(90)"  class="cr-btn"       data-r="90">3M</button>
+        <button onclick="setChartRange(180)" class="cr-btn"       data-r="180">6M</button>
+        <button onclick="setChartRange(365)" class="cr-btn"       data-r="365">1Y</button>
+        <button onclick="setChartRange(0)"   class="cr-btn"       data-r="0">All</button>
+      </div>
+    </div>
+    <svg id="growth-svg" style="width:100%;overflow:visible;display:block" viewBox="0 0 320 130"></svg>
+    <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:9px;color:var(--mid)" id="growth-xlbls"></div>
+    <div style="display:flex;justify-content:space-between;margin-top:10px;border-top:1px solid var(--bord);padding-top:10px">
+      <div style="text-align:center;flex:1"><div style="font-size:9px;color:var(--mid);text-transform:uppercase;letter-spacing:.6px;margin-bottom:3px">Cost Basis</div><div style="font-size:12px;font-weight:700;color:var(--mid)" id="growth-start">-</div></div>
+      <div style="text-align:center;flex:1"><div style="font-size:9px;color:var(--mid);text-transform:uppercase;letter-spacing:.6px;margin-bottom:3px">Market Value</div><div style="font-size:12px;font-weight:700;color:var(--grn)" id="growth-now">-</div></div>
+      <div style="text-align:center;flex:1"><div style="font-size:9px;color:var(--mid);text-transform:uppercase;letter-spacing:.6px;margin-bottom:3px">Total Gain/Loss</div><div style="font-size:12px;font-weight:700" id="growth-ret">-</div></div>
+    </div>
+  </div>
+
+  <div class="card" style="padding:12px 14px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+      <div>
+        <div class="clbl" style="margin-bottom:2px">T212 Live Sync</div>
+        <div style="font-size:10px;color:var(--mid)" id="d-prices-status">Pulls live positions, prices and dividends from Trading 212</div>
+      </div>
+      <button onclick="syncT212()" id="d-fetch-btn"
+        style="background:var(--grn);color:#071207;border:none;border-radius:10px;padding:9px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;flex-shrink:0">
+        &#8635; Sync T212
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- PORTFOLIO -->
+<div class="pg" id="pg-port">
+  <div class="card">
+    <div class="clbl">Add / Update Holding</div>
+    <div class="frow">
+      <div class="fg"><label>Ticker</label><input id="f-tk" placeholder="e.g. LGEN" style="text-transform:uppercase"></div>
+      <div class="fg"><label>Name</label><input id="f-nm" placeholder="Company name"></div>
+    </div>
+    <div class="frow3">
+      <div class="fg"><label>Shares</label><input id="f-sh" type="number" min="0" step="any" placeholder="0"></div>
+      <div class="fg"><label>Avg Price &#163;</label><input id="f-ap" type="number" min="0" step="any" placeholder="0.00"></div>
+      <div class="fg"><label>Current Price &#163;</label><input id="f-cp" type="number" min="0" step="any" placeholder="0.00"></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label>Yield %</label><input id="f-yl" type="number" min="0" step="any" placeholder="auto"></div>
+      <div class="fg"><label>Ex-Div Date</label><input id="f-ed" type="date"></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label>Account</label>
+        <select id="f-ac"><option value="invest">Invest</option><option value="isa">ISA</option></select>
+      </div>
+      <div class="fg"><label>Next Payment &#163;</label><input id="f-np" type="number" min="0" step="any" placeholder="0.00"></div>
+    </div>
+    <button class="btn" onclick="addHolding()">+ Add Holding</button>
+  </div>
+
+  <div class="card" style="padding:12px 14px">
+    <div class="clbl" style="margin-bottom:10px">Returns Summary</div>
+    <div style="background:var(--surf);border-radius:8px;overflow:hidden">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 10px;border-bottom:1px solid var(--bord)">
+        <span style="font-size:11px;color:var(--mid)">Capital Gain/Loss</span>
+        <span style="font-size:15px;font-weight:800;font-variant-numeric:tabular-nums" id="ov-gl-cap">-</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 10px;border-bottom:1px solid var(--bord)">
+        <span style="font-size:11px;color:var(--mid)">Dividends Received</span>
+        <span style="font-size:15px;font-weight:800;color:var(--grn);font-variant-numeric:tabular-nums" id="ov-gl-div">-</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 10px;background:var(--card)">
+        <span style="font-size:12px;font-weight:700">Total Return</span>
+        <span style="font-size:16px;font-weight:800;font-variant-numeric:tabular-nums" id="ov-gl-total">-</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-hd"><span class="sec-lbl g">Invest</span><span id="inv-cnt" style="font-size:11px;color:var(--mid)"></span><span class="sec-tot" id="inv-tot" style="color:var(--grn)"></span></div>
+  <div class="card" id="inv-list"><div class="empty"><div class="ei">&#128202;</div><p>Tap Sync T212 on Dashboard to load holdings</p></div></div>
+  <div class="sec-hd" style="margin-top:4px"><span class="sec-lbl a">ISA</span><span id="isa-cnt" style="font-size:11px;color:var(--mid)"></span><span class="sec-tot" id="isa-tot" style="color:var(--amb)"></span></div>
+  <div class="card" id="isa-list"><div class="empty"><div class="ei">&#128737;&#65039;</div><p>Tap Sync T212 on Dashboard to load holdings</p></div></div>
+</div>
+
+<!-- CALENDAR -->
+<div class="pg" id="pg-cal">
+  <div class="g3">
+    <div class="sc"><div class="sl">30 Days</div><div class="sv g" id="c30">&#163;0</div></div>
+    <div class="sc"><div class="sl">90 Days</div><div class="sv a" id="c90">&#163;0</div></div>
+    <div class="sc"><div class="sl">12 Months</div><div class="sv b" id="c12">&#163;0</div></div>
+  </div>
+  <div id="cal-body"><div class="empty"><div class="ei">&#128197;</div><p>Sync T212 to see upcoming dividend payments</p></div></div>
+</div>
+
+<!-- HISTORY -->
+<div class="pg" id="pg-hist">
+  <div class="g2">
+    <div class="sc"><div class="sl">Total Received</div><div class="sv g" id="ht">&#163;0</div></div>
+    <div class="sc"><div class="sl">Payments</div><div class="sv" id="hc">0</div></div>
+  </div>
+  <div class="card">
+    <div class="clbl">Dividend History</div>
+    <div id="hist-body"><div class="empty"><div class="ei">&#128220;</div><p>Sync T212 to see dividend history</p></div></div>
+  </div>
+</div>
+
+<!-- PROJECTION -->
+<div class="pg" id="pg-proj">
+  <div class="card">
+    <div class="slider-row">
+      <div class="slider-top"><span>Monthly Investment</span><span id="p-al">&#163;200</span></div>
+      <input type="range" min="0" max="2000" step="50" value="200" id="p-a" oninput="renderProj()">
+      <div class="rends"><span>&#163;0</span><span>&#163;2,000</span></div>
+    </div>
+    <div class="slider-row">
+      <div class="slider-top"><span>Period</span><span id="p-yl">10 years</span></div>
+      <input type="range" min="1" max="30" value="10" id="p-y" oninput="renderProj()" style="accent-color:var(--blu)">
+      <div class="rends"><span>1yr</span><span>30yr</span></div>
+    </div>
+    <div class="drip-row on" id="drip-row" onclick="toggleDrip()">
+      <div>
+        <div style="font-size:13px;font-weight:700;color:var(--grn)" id="drip-lbl">DRIP &mdash; Reinvest Dividends</div>
+        <div style="font-size:10px;color:var(--mid);margin-top:1px" id="drip-sub">Compound growth on</div>
+      </div>
+      <div class="tog on" id="drip-tog"></div>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="sc"><div class="sl">Portfolio in <span id="p-yn">10</span>yr</div><div class="sv g" id="p-pv">&#8212;</div></div>
+    <div class="sc"><div class="sl">Annual Income</div><div class="sv a" id="p-ad">&#8212;</div></div>
+    <div class="sc"><div class="sl">Monthly Income</div><div class="sv" id="p-md">&#8212;</div></div>
+    <div class="sc"><div class="sl">Total Received</div><div class="sv" id="p-tr">&#8212;</div></div>
+  </div>
+  <div class="card" style="margin-bottom:10px">
+    <div class="clbl" style="margin-bottom:6px">Growth Chart</div>
+    <svg id="psvg" class="psvg" viewBox="0 0 320 100"></svg>
+    <div style="display:flex;justify-content:space-between;margin-top:3px;font-size:9px;color:var(--mid)"><span>Now</span><span id="p-el">10yr</span></div>
+  </div>
+  <div class="card">
+    <div class="clbl">Monthly Income &mdash; Next 12 Months</div>
+    <div class="bchart" id="proj-mbars" style="height:80px"></div>
+    <div style="display:flex;gap:3px;margin-top:5px" id="proj-mblbls"></div>
+    <div style="display:flex;justify-content:space-between;margin-top:8px;padding-top:8px;border-top:1px solid var(--bord)">
+      <div style="text-align:center;flex:1"><div style="font-size:9px;color:var(--mid);text-transform:uppercase;letter-spacing:.8px">Lowest</div><div style="font-size:14px;font-weight:800;color:var(--grn);font-variant-numeric:tabular-nums" id="proj-mlow">-</div></div>
+      <div style="text-align:center;flex:1"><div style="font-size:9px;color:var(--mid);text-transform:uppercase;letter-spacing:.8px">Average</div><div style="font-size:14px;font-weight:800;color:var(--amb);font-variant-numeric:tabular-nums" id="proj-mavg">-</div></div>
+      <div style="text-align:center;flex:1"><div style="font-size:9px;color:var(--mid);text-transform:uppercase;letter-spacing:.8px">Best</div><div style="font-size:14px;font-weight:800;color:var(--grn);font-variant-numeric:tabular-nums" id="proj-mhigh">-</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="clbl">Year by Year</div>
+    <table class="ptable"><thead><tr><th>Year</th><th>Portfolio</th><th>Annual Div</th><th>Monthly</th></tr></thead><tbody id="p-tb"></tbody></table>
+  </div>
+</div>
+
+<!-- GOALS -->
+<div class="pg" id="pg-goal">
+  <div class="card">
+    <div class="clbl">Monthly Income Goal</div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+      <span style="font-size:22px;color:var(--grn)">&#163;</span>
+      <input id="goal-monthly" type="number" min="0" step="10" placeholder="e.g. 1000"
+        style="font-size:28px;font-weight:800;color:var(--grn);background:transparent;border:none;border-bottom:2px solid var(--bord);border-radius:0;padding:4px 0;outline:none;width:100%"
+        oninput="saveGoal()">
+      <span style="font-size:14px;color:var(--mid);white-space:nowrap">/month</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+      <span style="font-size:12px;color:var(--mid)">Current monthly income</span>
+      <span style="font-size:12px;font-weight:800;color:var(--grn);font-variant-numeric:tabular-nums" id="goal-current">&#163;0</span>
+    </div>
+    <div style="background:var(--bord);border-radius:8px;height:12px;overflow:hidden;margin-bottom:8px">
+      <div id="goal-bar" style="height:100%;background:linear-gradient(90deg,var(--grn),#86efac);border-radius:8px;transition:width .5s ease;width:0%"></div>
+    </div>
+    <div style="display:flex;justify-content:space-between">
+      <span style="font-size:12px;color:var(--mid)" id="goal-pct">0% of goal</span>
+      <span style="font-size:12px;color:var(--mid)" id="goal-gap"></span>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="sc"><div class="sl">Annual Goal</div><div class="sv g" id="goal-ann">&#163;0</div></div>
+    <div class="sc"><div class="sl">Monthly Gap</div><div class="sv r" id="goal-need">&#163;0</div></div>
+    <div class="sc"><div class="sl">On Track In</div><div class="sv b" id="goal-eta">-</div></div>
+    <div class="sc"><div class="sl">Capital Needed</div><div class="sv" id="goal-cap">-</div><div class="ssub">at current yield</div></div>
+  </div>
+  <div class="card"><div class="clbl">Milestones</div><div id="goal-milestones"></div></div>
+  <div class="card">
+    <div class="clbl">DRIP Calculator</div>
+    <div style="font-size:11px;color:var(--mid);margin-bottom:10px;line-height:1.6">Years to double income per holding by reinvesting dividends.</div>
+    <div id="drip-table"></div>
+  </div>
+  <div class="card">
+    <div class="clbl">Live Prices <span id="prices-status" style="font-size:10px;color:var(--mid);font-weight:400"></span></div>
+    <button class="btn" onclick="fetchPrices()" id="fetch-btn">&#8635; Refresh Live Prices</button>
+    <div id="prices-log" style="margin-top:10px;font-size:11px;color:var(--mid);line-height:1.8;min-height:20px"></div>
+  </div>
+</div>
+
+<!-- IMPORT -->
+<div class="pg" id="pg-imp">
+  <div class="card">
+    <div class="clbl">T212 API Sync</div>
+    <div style="font-size:11px;color:var(--mid);margin-bottom:12px;line-height:1.7">
+      Your T212 API keys are built in. Tap Sync T212 on the Dashboard to pull everything automatically.<br><br>
+      <strong style="color:var(--grn)">What syncs:</strong> All positions, current prices, average cost, cash balance, dividend history.
+    </div>
+    <button class="btn" onclick="syncT212()">&#8635; Sync T212 Now</button>
+    <div id="sync-st" style="margin-top:10px;font-size:11px;color:var(--mid);line-height:1.8;white-space:pre-wrap;min-height:16px"></div>
+  </div>
+
+  <div class="card">
+    <div class="clbl">Manual CSV Import <span style="font-size:9px;color:var(--mid);font-weight:400;text-transform:none;letter-spacing:0">fallback option</span></div>
+    <div class="acct-toggle">
+      <button id="btn-inv" class="acct-btn inv on" onclick="setAcct('invest')">Invest Account</button>
+      <button id="btn-isa" class="acct-btn isa"    onclick="setAcct('isa')">ISA Account</button>
+    </div>
+    <label class="filelbl">
+      <input type="file" accept=".csv,text/csv,text/*" onchange="handleFile(this)">
+      <div class="fi">&#128194;</div>
+      <div class="ft"><strong>Tap to select CSV file</strong><br>T212 Activity export</div>
+    </label>
+    <textarea id="paste-box" rows="3" placeholder="Or paste CSV text here..." style="margin-bottom:8px;font-size:11px"></textarea>
+    <button class="btn amb" onclick="handlePaste()">Import Pasted CSV</button>
+    <div id="imp-st">Select account above, then import your CSV.</div>
+  </div>
+
+  <div class="card">
+    <div class="clbl">Live Dividend Data <span style="font-size:9px;color:var(--mid);font-weight:400;text-transform:none;letter-spacing:0">via Finnhub</span></div>
+    <div style="font-size:11px;color:var(--mid);margin-bottom:10px;line-height:1.7">Fetches real dividend schedules and ex-dates for all holdings.</div>
+    <button class="btn amb" onclick="fetchDividendData()" id="div-fetch-btn">&#8635; Refresh Dividend Data</button>
+    <div id="div-fetch-st" style="margin-top:10px;font-size:11px;color:var(--mid);line-height:1.8;white-space:pre-wrap;min-height:16px"></div>
+  </div>
+
+  <div class="card">
+    <div class="clbl">Recalculate</div>
+    <button class="btn sec" onclick="recalcAll()" style="margin-bottom:0">Recalculate All Dividends</button>
+    <div id="recalc-st" style="margin-top:8px;font-size:11px;color:var(--mid)"></div>
+  </div>
+
+  <div class="card">
+    <div class="clbl">Install as App</div>
+    <div style="font-size:12px;color:var(--lit);line-height:1.9;margin-bottom:10px">
+      <strong style="color:#fff">Android Chrome:</strong> tap <strong style="color:#fff">3-dot menu &#8942;</strong> &rarr; <strong style="color:#fff">Add to Home screen</strong>
+    </div>
+    <button class="btn sec" id="install-btn" style="display:none" onclick="doInstall()">Install App</button>
+  </div>
+
+  <div class="card">
+    <div class="clbl">Manage Data</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <button class="btn warn" onclick="clearHist()">Clear History</button>
+      <button class="btn warn" onclick="clearAll()">Clear Everything</button>
+    </div>
+  </div>
+</div>
+
+<script>
+
+var UK_YIELDS = {
+  // US growth stocks - no dividend
+  GOOGL:0, AMZN:0, FSLR:0, LLY:0, NVDA:0, PLTR:0, HOOD:0, SOFI:0, VERX:2.6, WINC:9.3, GAW:2.8,
+  // US dividend payers
+  PLD:3.1, BEPC:4.1, NVO:2.2, NOVO:2.2, O:5.2, REXR:5.1, VST:0.6,
+  KLAC:1.8, ASML:1.4, MSFT:0.8, META:0.4,
+  // UK investment trusts
+  JGGI:3.9,
+  LLOY:3.6, BARC:1.8, HSBA:6.1, NWG:5.2, STAN:3.1,
+  LGEN:9.1, AVIV:8.2, PRU:2.1, STRE:3.8, JUP:7.2, ABDN:8.1,
+  SGRO:6.1, LAND:5.1, BLND:6.8, HMSO:4.2, BBOX:4.8, WHR:7.1,
+  SHEL:3.9, BP:4.8, GLEN:4.2, RIO:6.8, AAL:2.1, BHP:5.9,
+  ULVR:3.4, RKT:3.1, ABF:2.1, TSCO:3.8, SBRY:4.2, MKS:2.8,
+  DGE:2.7, REL:2.3, WPP:6.8, PETS:6.5, MWY:7.5,
+  AZN:1.8, GSK:3.9, HIK:3.1, SMDS:5.2,
+  VOD:10.2, BT:5.8, NG:3.7, SSE:4.8, UU:5.1, SVT:5.8, PNN:3.1,
+  IMB:6.0, BATS:5.7, MNG:9.1, MONY:6.6,
+  BAE:2.8, RR:0.8, EXPN:1.6, RELX:1.6,
+  VHYL:4.1, VUSA:1.4, ISF:3.8, IUKD:4.5, IUKP:3.9,
+  NCYF:11.2, SMIF:6.8, FCIT:1.8, CTY:4.8,
+  MRCH:4.9, SCIN:1.2, BRWM:4.2, HFEL:8.1, MNKS:0.9
+}
+
+var KNOWN_DIVS = {
+
+  // ── UK / LSE stocks ─────────────────────────────────────────────────────────
+
+  // User-confirmed exact payments
+  LGEN: { payments: [
+    { payDate:'2026-06-04', exDate:'2026-04-23', perShare:0.1567 },
+    { payDate:'2026-09-26', exDate:'2026-08-20', perShare:0.0681 }
+  ], annualPerShare:0.2248, freq:2 },
+
+  AVIV: { payments: [
+    { payDate:'2026-05-14', exDate:'2026-04-03', perShare:0.0815 },
+    { payDate:'2026-10-16', exDate:'2026-08-06', perShare:0.2580 }
+  ], annualPerShare:0.3395, freq:2 },
+  // AV. is T212's ticker for Aviva (with dot) - alias both
+  'AV.': { payments: [
+    { payDate:'2026-05-14', exDate:'2026-04-03', perShare:0.0815 },
+    { payDate:'2026-10-16', exDate:'2026-08-06', perShare:0.2580 }
+  ], annualPerShare:0.3395, freq:2 },
+  AV: { payments: [
+    { payDate:'2026-05-14', exDate:'2026-04-03', perShare:0.0815 },
+    { payDate:'2026-10-16', exDate:'2026-08-06', perShare:0.2580 }
+  ], annualPerShare:0.3395, freq:2 },
+
+  LLOY: { payments: [
+    { payDate:'2026-05-19', exDate:'2026-04-09', perShare:0.0243 },
+    { payDate:'2026-09-09', exDate:'2026-07-31', perShare:0.0122 }
+  ], annualPerShare:0.0365, freq:2 },
+
+  BARC: { payments: [
+    { payDate:'2026-03-31', exDate:'2026-02-19', perShare:0.0560 },
+    { payDate:'2026-09-16', exDate:'2026-08-07', perShare:0.0300 }
+  ], annualPerShare:0.0860, freq:2 },
+
+  SGRO: { payments: [
+    { payDate:'2026-05-14', exDate:'2026-03-27', perShare:0.2020 },
+    { payDate:'2026-09-19', exDate:'2026-08-07', perShare:0.0970 }
+  ], annualPerShare:0.2990, freq:2 },
+
+  PETS: { payments: [
+    { payDate:'2026-07-16', exDate:'2026-06-05', perShare:0.0830 },
+    { payDate:'2027-01-09', exDate:'2026-12-04', perShare:0.0470 }
+  ], annualPerShare:0.1300, freq:2 },
+
+  NWG: { payments: [
+    { payDate:'2026-05-05', exDate:'2026-03-19', perShare:0.1550 },
+    { payDate:'2026-09-12', exDate:'2026-08-06', perShare:0.0950 }
+  ], annualPerShare:0.2500, freq:2 },
+
+  MONY: { payments: [
+    { payDate:'2026-05-01', exDate:'2026-03-26', perShare:0.0775 },
+    { payDate:'2026-10-02', exDate:'2026-08-27', perShare:0.0388 }
+  ], annualPerShare:0.1163, freq:2 },
+
+  // JGGI: quarterly, 5.75p/quarter, paid Mar/Jun/Sep/Dec
+  JGGI: { payments: [
+    { payDate:'2026-03-30', exDate:'2026-03-05', perShare:0.0575 },
+    { payDate:'2026-06-30', exDate:'2026-06-04', perShare:0.0575 },
+    { payDate:'2026-09-30', exDate:'2026-09-03', perShare:0.0575 },
+    { payDate:'2026-12-30', exDate:'2026-12-03', perShare:0.0575 }
+  ], annualPerShare:0.2300, freq:4 },
+
+  // GAW: quarterly but variable amounts. FY25/26 total ~£4.85/share
+  GAW: { payments: [
+    { payDate:'2026-03-27', exDate:'2026-02-19', perShare:0.50 },
+    { payDate:'2026-05-27', exDate:'2026-04-16', perShare:1.10 },
+    { payDate:'2026-08-14', exDate:'2026-07-10', perShare:0.85 },
+    { payDate:'2026-10-02', exDate:'2026-08-27', perShare:0.55 }
+  ], annualPerShare:4.85, freq:4 },
+
+  // DRX Drax: semi-annual, final 17.4p May, interim ~11.6p Oct
+  DRX: { payments: [
+    { payDate:'2026-05-15', exDate:'2026-04-23', perShare:0.174 },
+    { payDate:'2026-10-24', exDate:'2026-09-25', perShare:0.116 }
+  ], annualPerShare:0.290, freq:2 },
+
+  // GSK: quarterly, 17-18p per quarter (70p full year 2026 guidance)
+  GSK: { payments: [
+    { payDate:'2026-04-09', exDate:'2026-02-19', perShare:0.18 },
+    { payDate:'2026-07-09', exDate:'2026-05-14', perShare:0.17 },
+    { payDate:'2026-10-08', exDate:'2026-08-13', perShare:0.17 },
+    { payDate:'2027-01-08', exDate:'2026-11-12', perShare:0.18 }
+  ], annualPerShare:0.70, freq:4 },
+
+  // VHYL: quarterly, amounts vary. ~32p/66p/30p/40p pattern (LSE GBP class)
+  VHYL: { payments: [
+    { payDate:'2026-04-01', exDate:'2026-03-19', perShare:0.321 },
+    { payDate:'2026-07-02', exDate:'2026-06-19', perShare:0.660 },
+    { payDate:'2026-10-01', exDate:'2026-09-17', perShare:0.300 },
+    { payDate:'2027-01-02', exDate:'2026-12-17', perShare:0.380 }
+  ], annualPerShare:1.661, freq:4 },
+
+  // IUKD: quarterly, ~4.02p per quarter (Mar/Jun/Sep/Dec)
+  IUKD: { payments: [
+    { payDate:'2026-03-31', exDate:'2026-03-19', perShare:0.0402 },
+    { payDate:'2026-06-30', exDate:'2026-06-18', perShare:0.0402 },
+    { payDate:'2026-09-30', exDate:'2026-09-17', perShare:0.0402 },
+    { payDate:'2026-12-31', exDate:'2026-12-17', perShare:0.0402 }
+  ], annualPerShare:0.1608, freq:4 },
+
+  // ── US / Non-LSE stocks ──────────────────────────────────────────────────────
+
+  // PLD Prologis: quarterly $1.07/share
+  PLD: { payments: [
+    { payDate:'2026-03-31', exDate:'2026-03-17', perShare:1.07 },
+    { payDate:'2026-06-30', exDate:'2026-06-16', perShare:1.07 },
+    { payDate:'2026-09-30', exDate:'2026-09-15', perShare:1.07 },
+    { payDate:'2026-12-31', exDate:'2026-12-15', perShare:1.07 }
+  ], annualPerShare:4.28, freq:4 },
+
+  // BEPC Brookfield Renewable Corp: quarterly $0.392/share
+  BEPC: { payments: [
+    { payDate:'2026-03-31', exDate:'2026-02-27', perShare:0.392 },
+    { payDate:'2026-06-30', exDate:'2026-05-28', perShare:0.392 },
+    { payDate:'2026-09-30', exDate:'2026-08-28', perShare:0.392 },
+    { payDate:'2026-12-31', exDate:'2026-11-27', perShare:0.392 }
+  ], annualPerShare:1.568, freq:4 },
+
+  // NVO Novo Nordisk ADR: semi-annual, $1.28 final Mar, $0.58 interim Aug
+  NOVO: { payments: [
+    { payDate:'2026-04-08', exDate:'2026-03-30', perShare:1.28 },
+    { payDate:'2026-08-26', exDate:'2026-08-18', perShare:0.58 }
+  ], annualPerShare:1.86, freq:2 },
+  NVO:  { payments: [
+    { payDate:'2026-04-08', exDate:'2026-03-30', perShare:1.28 },
+    { payDate:'2026-08-26', exDate:'2026-08-18', perShare:0.58 }
+  ], annualPerShare:1.86, freq:2 },
+
+  // O Realty Income: monthly $0.2705/share
+  O: { payments: [
+    { payDate:'2026-05-15', exDate:'2026-04-30', perShare:0.2705 },
+    { payDate:'2026-06-15', exDate:'2026-05-31', perShare:0.2705 },
+    { payDate:'2026-07-15', exDate:'2026-06-30', perShare:0.2705 },
+    { payDate:'2026-08-15', exDate:'2026-07-31', perShare:0.2705 },
+    { payDate:'2026-09-15', exDate:'2026-08-31', perShare:0.2705 },
+    { payDate:'2026-10-15', exDate:'2026-09-30', perShare:0.2705 },
+    { payDate:'2026-11-15', exDate:'2026-10-31', perShare:0.2705 },
+    { payDate:'2026-12-15', exDate:'2026-11-30', perShare:0.2705 },
+    { payDate:'2027-01-15', exDate:'2026-12-31', perShare:0.2705 }
+  ], annualPerShare:3.246, freq:12 },
+
+  // REXR Rexford Industrial: quarterly $0.435/share
+  REXR: { payments: [
+    { payDate:'2026-04-15', exDate:'2026-03-31', perShare:0.435 },
+    { payDate:'2026-07-15', exDate:'2026-06-15', perShare:0.435 },
+    { payDate:'2026-10-15', exDate:'2026-09-15', perShare:0.435 },
+    { payDate:'2027-01-15', exDate:'2026-12-15', perShare:0.435 }
+  ], annualPerShare:1.74, freq:4 },
+
+  // VST Vistra: quarterly $0.229/share
+  VST: { payments: [
+    { payDate:'2026-03-31', exDate:'2026-03-20', perShare:0.228 },
+    { payDate:'2026-06-30', exDate:'2026-06-22', perShare:0.229 },
+    { payDate:'2026-09-30', exDate:'2026-09-19', perShare:0.229 },
+    { payDate:'2026-12-31', exDate:'2026-12-19', perShare:0.229 }
+  ], annualPerShare:0.915, freq:4 },
+
+  // KLAC KLA Corp: quarterly $2.30/share (post 10:1 split will be $0.23)
+  KLAC: { payments: [
+    { payDate:'2026-06-02', exDate:'2026-05-12', perShare:2.30 },
+    { payDate:'2026-09-02', exDate:'2026-08-11', perShare:2.30 },
+    { payDate:'2026-12-02', exDate:'2026-11-10', perShare:2.30 },
+    { payDate:'2027-03-02', exDate:'2027-02-09', perShare:2.30 }
+  ], annualPerShare:9.20, freq:4 },
+
+  // ASML: quarterly, ~€1.50-2.50/share variable
+  ASML: { payments: [
+    { payDate:'2026-05-06', exDate:'2026-04-30', perShare:2.15 },
+    { payDate:'2026-11-05', exDate:'2026-10-30', perShare:1.52 }
+  ], annualPerShare:6.40, freq:2 },
+
+  // Non-dividend payers (no entry needed but mark them)
+  // GOOGL, AMZN, META, FSLR, LLY, MSFT, NVDA, PLTR, HOOD, SOFI, VERX, WINC, GAW (growth focused)
+  // Note: MSFT and META do pay small dividends
+
+  MSFT: { payments: [
+    { payDate:'2026-06-12', exDate:'2026-05-14', perShare:0.83 },
+    { payDate:'2026-09-11', exDate:'2026-08-20', perShare:0.83 },
+    { payDate:'2026-12-10', exDate:'2026-11-19', perShare:0.83 },
+    { payDate:'2027-03-12', exDate:'2027-02-18', perShare:0.83 }
+  ], annualPerShare:3.32, freq:4 },
+
+  META: { payments: [
+    { payDate:'2026-06-26', exDate:'2026-06-16', perShare:0.525 },
+    { payDate:'2026-09-25', exDate:'2026-09-15', perShare:0.525 },
+    { payDate:'2026-12-28', exDate:'2026-12-15', perShare:0.525 },
+    { payDate:'2027-03-26', exDate:'2027-03-15', perShare:0.525 }
+  ], annualPerShare:2.10, freq:4 },
+
+  // VERX: Vanguard FTSE Developed Europe ex-UK UCITS ETF - quarterly Apr/Jul/Oct/Dec
+  VERX: { payments: [
+    { payDate:'2026-04-01', exDate:'2026-03-19', perShare:0.105 },
+    { payDate:'2026-07-01', exDate:'2026-06-18', perShare:0.105 },
+    { payDate:'2026-10-01', exDate:'2026-09-17', perShare:0.105 },
+    { payDate:'2026-12-31', exDate:'2026-12-17', perShare:0.105 }
+  ], annualPerShare:0.420, freq:4 },
+
+  // WINC: iShares World Equity High Income Active UCITS ETF - quarterly Jan/Apr/Jul/Oct
+  // LSE GBP class ~£0.10/quarter, yield ~9.3%
+  WINC: { payments: [
+    { payDate:'2026-04-30', exDate:'2026-04-17', perShare:0.100 },
+    { payDate:'2026-07-30', exDate:'2026-07-16', perShare:0.100 },
+    { payDate:'2026-10-29', exDate:'2026-10-15', perShare:0.100 },
+    { payDate:'2027-01-28', exDate:'2027-01-14', perShare:0.100 }
+  ], annualPerShare:0.400, freq:4 }
+}
+
+// ── KEYS ──────────────────────────────────────────────────────────────────────
+var T212_INVEST_KEY = '41145131ZmqUdMZlbpSpfxslyVxjNUqzYUkNV';
+var T212_ISA_KEY    = '41814643ZQRImDciYLCPWAoklIhnPwFnSTPLF';
+var T212_BASE       = 'https://live.trading212.com/api/v0';
+var FINN_KEY        = 'd80o4thr01qt5k5vlqc0d80o4thr01qt5k5vlqcg';
+
+// ── DATA ──────────────────────────────────────────────────────────────────────
+var DB = {
+  invest:{holdings:[],history:[]}, isa:{holdings:[],history:[]},
+  drip:true, goalMonthly:0, bankBalance:0, bankLabel:'', snapshots:[]
+};
+var importAcct='invest';
+var dripOn=true;
+
+function persist(){ try{localStorage.setItem('dt6',JSON.stringify(DB));}catch(e){} }
+function hydrate(){
+  try{
+    var raw=localStorage.getItem('dt6'); if(!raw)return;
+    var d=JSON.parse(raw);
+    DB.invest   =d.invest   ||{holdings:[],history:[]};
+    DB.isa      =d.isa      ||{holdings:[],history:[]};
+    DB.drip     =d.drip!==false;
+    DB.goalMonthly=d.goalMonthly||0;
+    DB.bankBalance=d.bankBalance||0;
+    DB.bankLabel  =d.bankLabel||'';
+    DB.snapshots  =d.snapshots||[];
+  }catch(e){}
+}
+
+// ── FORMAT ────────────────────────────────────────────────────────────────────
+function fmt(n){return '\u00a3'+Math.abs(n||0).toLocaleString('en-GB',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function n2(n){return (n||0).toLocaleString('en-GB',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function fdate(s){if(!s)return'-';var d=new Date(s);return isNaN(d.getTime())?s:d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});}
+function fmo(d){return d.toLocaleDateString('en-GB',{month:'short',year:'numeric'});}
+
+// ── DERIVED ───────────────────────────────────────────────────────────────────
+function getAdiv(h){return h.annualDiv||0;}
+function getCost(h){return h.cost||(h.shares*h.avgPrice)||0;}
+function getCurrVal(h){if(h.currentPrice&&h.shares)return h.shares*h.currentPrice;return getCost(h);}
+function getGL(h){return getCurrVal(h)-getCost(h);}
+function getGLpct(h){var c=getCost(h);return c?getGL(h)/c*100:0;}
+function allH(){return DB.invest.holdings.concat(DB.isa.holdings);}
+function allHist(){return DB.invest.history.concat(DB.isa.history);}
+function totalAnn(){return allH().reduce(function(s,h){return s+getAdiv(h);},0);}
+function totalVal(){return allH().reduce(function(s,h){return s+getCurrVal(h);},0);}
+function totalCost(){return allH().reduce(function(s,h){return s+getCost(h);},0);}
+function totalGL(){return totalVal()-totalCost()+allHist().reduce(function(s,h){return s+(h.amount||0);},0);}
+function acctAnn(a){return DB[a].holdings.reduce(function(s,h){return s+getAdiv(h);},0);}
+function acctVal(a){return DB[a].holdings.reduce(function(s,h){return s+getCurrVal(h);},0);}
+function acctCost(a){return DB[a].holdings.reduce(function(s,h){return s+getCost(h);},0);}
+
+// ── T212 API SYNC ─────────────────────────────────────────────────────────────
+function t212Fetch(key, path) {
+  var url = T212_BASE + path;
+  var headers = { 'Authorization': key };
+  // Try direct first, fall back to CORS proxy
+  return fetch(url, { headers: headers })
+    .then(function(r){
+      if (!r.ok) throw new Error(r.status);
+      return r.json();
+    })
+    .catch(function() {
+      // CORS blocked - try via proxy
+      var proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(url);
+      return fetch(proxyUrl, { headers: headers })
+        .then(function(r){
+          if (!r.ok) throw new Error('T212 API error ' + r.status + ' for ' + path);
+          return r.json();
+        });
+    });
+}
+
+function t212FetchAll(key, path) {
+  var items = [];
+  function fetchPage(url) {
+    var headers = { 'Authorization': key };
+    return fetch(url, { headers: headers })
+      .catch(function() {
+        // Try CORS proxy
+        return fetch('https://corsproxy.io/?' + encodeURIComponent(url), { headers: headers });
+      })
+      .then(function(r){ return r.json(); })
+      .then(function(data) {
+        var pageItems = data.items || data || [];
+        if (Array.isArray(pageItems)) items = items.concat(pageItems);
+        if (data.nextPagePath) {
+          return fetchPage(T212_BASE + data.nextPagePath);
+        }
+        return items;
+      });
+  }
+  return fetchPage(T212_BASE + path + '?limit=50');
+}
+
+function syncT212() {
+  var btn    = document.getElementById('d-fetch-btn');
+  var status = document.getElementById('d-prices-status');
+  var syncSt = document.getElementById('sync-st');
+  if (btn)    { btn.disabled=true; btn.textContent='Syncing...'; }
+  if (status) status.textContent = 'Connecting...';
+  if (syncSt) syncSt.textContent = 'Starting sync...';
+
+  var log = [];
+  function addLog(msg) {
+    log.push(msg);
+    if (syncSt) syncSt.textContent = log.join('\n');
+  }
+
+  addLog('Step 1: Fetching Invest positions...');
+
+  // Test with a single simple call first
+  var investUrl = T212_BASE + '/equity/portfolio';
+  var isaUrl    = T212_BASE + '/equity/portfolio';
+
+  function tryFetch(url, key, label) {
+    addLog('Trying: ' + label);
+    return fetch(url, { headers: { 'Authorization': key } })
+      .then(function(r) {
+        addLog(label + ' direct: HTTP ' + r.status);
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      })
+      .catch(function(e) {
+        addLog(label + ' direct failed: ' + e.message + ' - trying proxy...');
+        var proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(url);
+        return fetch(proxyUrl, { headers: { 'Authorization': key } })
+          .then(function(r) {
+            addLog(label + ' proxy: HTTP ' + r.status);
+            if (!r.ok) throw new Error('Proxy HTTP ' + r.status);
+            return r.json();
+          })
+          .catch(function(e2) {
+            addLog(label + ' proxy also failed: ' + e2.message);
+            throw e2;
+          });
+      });
+  }
+
+  // Fetch invest portfolio
+  tryFetch(T212_BASE + '/equity/portfolio', T212_INVEST_KEY, 'Invest portfolio')
+    .then(function(data) {
+      addLog('Invest data received. Type: ' + typeof data);
+      if (Array.isArray(data)) addLog('Array with ' + data.length + ' items');
+      else if (data && data.items) addLog('Object with ' + data.items.length + ' items');
+      else addLog('Data: ' + JSON.stringify(data).slice(0, 200));
+
+      return tryFetch(T212_BASE + '/equity/portfolio', T212_ISA_KEY, 'ISA portfolio');
+    })
+    .then(function(data) {
+      addLog('ISA data received. Type: ' + typeof data);
+      if (Array.isArray(data)) addLog('Array with ' + data.length + ' items');
+      else if (data && data.items) addLog('Object with ' + data.items.length + ' items');
+      else addLog('Data: ' + JSON.stringify(data).slice(0, 200));
+
+      addLog('\nBoth accounts connected! Fetching full data...');
+      runFullSync(btn, status, syncSt);
+    })
+    .catch(function(e) {
+      addLog('\nFailed: ' + e.message);
+      addLog('\nThe T212 API may block browser requests due to CORS.');
+      addLog('Please use CSV Import as an alternative.');
+      if (btn) { btn.disabled=false; btn.textContent='\u21BB Sync T212'; }
+      if (status) status.textContent = 'Sync failed - see details';
+    });
+}
+
+function runFullSync(btn, status, syncSt) {
+  var log = syncSt ? syncSt.textContent.split('\n') : [];
+  function addLog(msg) { log.push(msg); if(syncSt) syncSt.textContent=log.join('\n'); }
+
+  var results = { invest:{}, isa:{} };
+  var errors  = [];
+
+  Promise.all([
+    Promise.all([
+      t212Fetch(T212_INVEST_KEY, '/equity/portfolio').catch(function(e){ errors.push('Invest positions: '+e.message); return []; }),
+      t212Fetch(T212_INVEST_KEY, '/equity/account/cash').catch(function(e){ errors.push('Invest cash: '+e.message); return {}; }),
+      t212FetchAll(T212_INVEST_KEY, '/equity/history/dividends').catch(function(e){ errors.push('Invest divs: '+e.message); return []; })
+    ]).then(function(r){ results.invest={positions:r[0],cash:r[1],dividends:r[2]}; addLog('Invest: '+((Array.isArray(r[0])?r[0]:(r[0]&&r[0].items)||[]).length)+' positions, '+r[2].length+' dividends'); }),
+
+    Promise.all([
+      t212Fetch(T212_ISA_KEY, '/equity/portfolio').catch(function(e){ errors.push('ISA positions: '+e.message); return []; }),
+      t212Fetch(T212_ISA_KEY, '/equity/account/cash').catch(function(e){ errors.push('ISA cash: '+e.message); return {}; }),
+      t212FetchAll(T212_ISA_KEY, '/equity/history/dividends').catch(function(e){ errors.push('ISA divs: '+e.message); return []; })
+    ]).then(function(r){ results.isa={positions:r[0],cash:r[1],dividends:r[2]}; addLog('ISA: '+((Array.isArray(r[0])?r[0]:(r[0]&&r[0].items)||[]).length)+' positions, '+r[2].length+' dividends'); })
+  ]).then(function(){
+    processT212Data(results, errors);
+  }).catch(function(e){
+    addLog('Full sync error: '+e.message);
+    if(btn){btn.disabled=false;btn.textContent='\u21BB Sync T212';}
+  });
+}
+
+
+function processT212Data(results, errors) {
+  var btn    = document.getElementById('d-fetch-btn');
+  var status = document.getElementById('d-prices-status');
+  var syncSt = document.getElementById('sync-st');
+
+  ['invest','isa'].forEach(function(acct) {
+    var data = results[acct];
+    if (!data || !data.positions) return;
+
+    var positions = data.positions;
+    // T212 returns positions as array or {items: [...]}
+    if (!Array.isArray(positions)) positions = positions.items || [];
+
+    // Build holdings from positions
+    // Each position: { ticker, quantity, averagePrice, currentPrice, ppl, fxPpl }
+    var newHoldings = positions.map(function(p) {
+      // T212 tickers look like "LGEN_EQ" or "AAPL_US_EQ" - extract base ticker
+      var rawTicker = p.ticker || '';
+      var ticker = rawTicker.replace(/_EQ$/, '').replace(/_US_EQ$/, '').replace(/_UK_EQ$/, '').replace(/_EQ_.*$/, '').split('_')[0];
+      var name = rawTicker; // will be enriched
+      var shares = p.quantity || 0;
+      var avgPrice = p.averagePrice || 0;
+      var currPrice = p.currentPrice || avgPrice;
+      var cost = shares * avgPrice;
+
+      // Find existing holding to preserve dividend data
+      var existing = DB[acct].holdings.find(function(h){ return h.ticker===ticker; });
+      return {
+        id: existing ? existing.id : Date.now()+Math.random(),
+        ticker: ticker,
+        name: existing ? existing.name : ticker,
+        acct: acct,
+        shares: +shares.toFixed(6),
+        avgPrice: +avgPrice.toFixed(4),
+        currentPrice: +currPrice.toFixed(4),
+        cost: +cost.toFixed(2),
+        yieldPct:  existing ? existing.yieldPct  : 0,
+        annualDiv: existing ? existing.annualDiv  : 0,
+        nextPay:   existing ? existing.nextPay    : 0,
+        exDate:    existing ? existing.exDate     : '',
+        ppl:       p.ppl || 0  // T212 gives us the actual P&L!
+      };
+    }).filter(function(h){ return h.shares > 0.001; });
+
+    DB[acct].holdings = newHoldings;
+
+    // Dividend history
+    var divs = data.dividends || [];
+    if (!Array.isArray(divs)) divs = divs.items || [];
+    var seen = new Set(DB[acct].history.map(function(x){ return x.ticker+'|'+x.date+'|'+x.amount; }));
+    divs.forEach(function(d) {
+      var rawTicker = d.ticker || '';
+      var ticker = rawTicker.replace(/_EQ$/, '').replace(/_US_EQ$/, '').replace(/_UK_EQ$/, '').split('_')[0];
+      var amt  = d.amount || d.grossAmount || 0;
+      var date = (d.paidOn || d.reference || '').split('T')[0];
+      if (!date || !amt || amt <= 0) return;
+      var k = ticker+'|'+date+'|'+amt;
+      if (!seen.has(k)) {
+        DB[acct].history.push({ ticker:ticker, name:ticker, amount:amt, date:date, acct:acct });
+        seen.add(k);
+      }
+    });
+
+    // Cash balance - store as info but don't add to portfolio value
+    if (data.cash && data.cash.free !== undefined) {
+      DB[acct].cashBalance = data.cash.free || 0;
+    }
+  });
+
+  // Re-enrich all holdings with dividend data
+  recalcAll();
+  persist();
+  updateHeader();
+
+  var invCount = DB.invest.holdings.length;
+  var isaCount = DB.isa.holdings.length;
+  var divCount = DB.invest.history.length + DB.isa.history.length;
+  var msg = invCount+isaCount > 0
+    ? 'Synced ' + (invCount+isaCount) + ' positions (' + invCount + ' Invest, ' + isaCount + ' ISA)\n' +
+      divCount + ' dividend payments loaded\n' +
+      new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}) +
+      (errors.length ? '\n\nWarnings:\n' + errors.join('\n') : '')
+    : 'No positions found.\n\nErrors:\n' + errors.join('\n') +
+      '\n\nIf this keeps failing, use CSV import instead.';
+
+  if (btn)    { btn.disabled=false; btn.textContent='\u21BB Sync T212'; }
+  if (status) status.textContent = 'Last synced ' + new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+  if (syncSt) syncSt.textContent = msg;
+
+  // Refresh current view
+  renderDash();
+  if (document.getElementById('pg-port').classList.contains('on')) renderPort();
+  if (document.getElementById('pg-cal').classList.contains('on'))  renderCal();
+  if (document.getElementById('pg-hist').classList.contains('on')) renderHist();
+}
+
+// ── SCHEDULE ──────────────────────────────────────────────────────────────────
+function buildSchedule() {
+  var now = new Date(); now.setHours(0,0,0,0);
+  // Window: today to 12 months ahead
+  var windowEnd = new Date(now); windowEnd.setFullYear(windowEnd.getFullYear() + 1);
+
+  // Build month buckets for next 12 months
+  var buckets = {};
+  for (var i = 0; i < 13; i++) {
+    var d = new Date(now.getFullYear(), now.getMonth() + i, 1);
+    var k = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
+    buckets[k] = { date:d, label:d.toLocaleDateString('en-GB',{month:'short'}), total:0, items:[] };
+  }
+
+  function addToSchedule(h, payDate, amount, exDate) {
+    var pd = new Date(payDate);
+    if (isNaN(pd.getTime())) return;
+    var k = pd.getFullYear() + '-' + String(pd.getMonth()+1).padStart(2,'0');
+    if (buckets[k]) {
+      buckets[k].total += amount;
+      buckets[k].items.push({
+        ticker: h.ticker, name: h.name, amount: amount,
+        date: new Date(pd), acct: h.acct, exDate: exDate||''
+      });
+    }
+  }
+
+  allH().forEach(function(h) {
+    var adiv = getAdiv(h);
+    var kd = KNOWN_DIVS[h.ticker];
+
+    if (kd && h.shares > 0) {
+      // Project ALL payments from KNOWN_DIVS forward into the 12-month window
+      // Start from the most recent known payment and cycle forward by frequency
+      var freqMonths = kd.freq === 12 ? 1 : kd.freq === 4 ? 3 : kd.freq === 1 ? 12 : 6;
+
+      // Get the base set of payments and cycle forward until we cover the window
+      // First pass: use hardcoded dates, then cycle forward
+      var placed = [];
+      kd.payments.forEach(function(pmt) {
+        var pd = new Date(pmt.payDate);
+        var amt = +(h.shares * pmt.perShare).toFixed(2);
+
+        // Place this payment and all future cycles within window
+        var cursor = new Date(pd);
+        // Go back if needed to find the right cycle start
+        while (cursor > windowEnd) cursor.setMonth(cursor.getMonth() - freqMonths);
+        while (cursor < now) cursor.setMonth(cursor.getMonth() + freqMonths);
+
+        // Place up to 2 cycles per payment entry within the window
+        for (var c = 0; c < 3; c++) {
+          if (cursor > windowEnd) break;
+          var ck = cursor.getFullYear() + '-' + String(cursor.getMonth()+1).padStart(2,'0');
+          // Avoid duplicates in same bucket from same ticker
+          var key = h.ticker + '|' + ck;
+          if (placed.indexOf(key) === -1) {
+            placed.push(key);
+            addToSchedule(h, cursor.toISOString().split('T')[0], amt, pmt.exDate);
+          }
+          cursor = new Date(cursor); cursor.setMonth(cursor.getMonth() + freqMonths);
+        }
+      });
+      return;
+    }
+
+    // Fallback: use exDate if available
+    if (h.exDate && adiv > 0) {
+      var base = new Date(h.exDate);
+      if (!isNaN(base.getTime())) {
+        base.setDate(base.getDate() + 42); // ~6 weeks to pay date
+        var freq = 3; // assume quarterly
+        var qpay = adiv / 4;
+        var cursor = new Date(base);
+        // Find next future payment
+        while (cursor < now) cursor.setMonth(cursor.getMonth() + freq);
+        for (var q = 0; q < 4; q++) {
+          if (cursor > windowEnd) break;
+          addToSchedule(h, cursor.toISOString().split('T')[0], qpay, '');
+          cursor = new Date(cursor); cursor.setMonth(cursor.getMonth() + freq);
+        }
+        return;
+      }
+    }
+
+    // Last resort: spread evenly across 12 months
+    if (adiv > 0) {
+      Object.keys(buckets).forEach(function(k) {
+        buckets[k].total += adiv / 12;
+        buckets[k].items.push({
+          ticker: h.ticker, name: h.name, amount: adiv/12,
+          date: buckets[k].date, acct: h.acct, exDate:''
+        });
+      });
+    }
+  });
+
+  return Object.keys(buckets).sort().map(function(k){ return buckets[k]; });
+}
+
+// ── NAV ───────────────────────────────────────────────────────────────────────
+var PAGES=['dash','port','cal','hist','proj','goal','imp'];
+var TAB_CLS={dash:'',port:'',cal:'amb',hist:'',proj:'blu',goal:'',imp:''};
+
+function go(name){
+  PAGES.forEach(function(p){document.getElementById('pg-'+p).classList.toggle('on',p===name);});
+  document.querySelectorAll('.tab').forEach(function(t,i){var p=PAGES[i];t.className='tab'+(p===name?' on'+(TAB_CLS[p]?' '+TAB_CLS[p]:''):'');});
+  if(name==='dash')renderDash(); if(name==='port')renderPort();
+  if(name==='cal')renderCal();   if(name==='hist')renderHist();
+  if(name==='proj')renderProj(); if(name==='goal')renderGoal();
+  updateHeader();
+}
+
+function updateHeader(){
+  var ann=totalAnn(),val=totalVal(),n=allH().length;
+  document.getElementById('hv').innerHTML=fmt(ann)+'<span style="font-size:10px;color:var(--mid);font-weight:400">/yr</span>';
+  document.getElementById('hs').textContent=n?n+' holding'+(n!==1?'s':'')+' \u00b7 '+fmt(val)+' portfolio':'Tap Sync T212 to load your portfolio';
+}
+
+// ── GROWTH CHART ──────────────────────────────────────────────────────────────
+var chartRangeDays=30;
+function setChartRange(days){
+  chartRangeDays=days;
+  document.querySelectorAll('.cr-btn').forEach(function(b){b.classList.toggle('cr-on',parseInt(b.dataset.r)===days);});
+  renderGrowthChart();
+}
+
+function saveSnapshot(force){
+  var today=new Date().toISOString().split('T')[0];
+  var last=DB.snapshots[DB.snapshots.length-1];
+  if(!force&&last&&last.date===today)return;
+  var snap={date:today,total:Math.round(totalVal()),invest:Math.round(acctVal('invest')),isa:Math.round(acctVal('isa')),deposited:Math.round(totalCost()),gain:totalVal()-totalCost()};
+  if(last&&last.date===today)DB.snapshots.pop();
+  DB.snapshots.push(snap);
+  if(DB.snapshots.length>365)DB.snapshots=DB.snapshots.slice(-365);
+  persist();
+}
+
+function renderGrowthChart(){
+  var svg=document.getElementById('growth-svg');
+  var xlbls=document.getElementById('growth-xlbls');
+  var startEl=document.getElementById('growth-start');
+  var nowEl=document.getElementById('growth-now');
+  var retEl=document.getElementById('growth-ret');
+  if(!svg)return;
+  var currentGL=totalGL(),currentCost=totalCost(),currentPct=currentCost>0?currentGL/currentCost*100:0;
+  if(startEl)startEl.textContent=fmt(currentCost);
+  if(nowEl)  nowEl.textContent=fmt(totalVal());
+  if(retEl){
+    retEl.innerHTML='<span style="display:block;font-size:13px;font-weight:800">'+(currentGL>=0?'+':'\u2212')+'\u00a3'+Math.abs(currentGL).toLocaleString('en-GB',{minimumFractionDigits:2,maximumFractionDigits:2})+'</span>'+
+      '<span style="font-size:10px;font-weight:600">'+(currentPct>=0?'+':'')+currentPct.toFixed(2)+'%</span>';
+    retEl.style.color=currentGL>=0?'var(--grn)':'var(--red)';
+  }
+  var snaps=DB.snapshots.slice();
+  var today=new Date().toISOString().split('T')[0];
+  var todaySnap={date:today,total:Math.round(totalVal()),deposited:Math.round(totalCost()),gain:totalVal()-totalCost()};
+  if(snaps.length&&snaps[snaps.length-1].date===today)snaps[snaps.length-1]=todaySnap;
+  else snaps.push(todaySnap);
+  if(chartRangeDays>0){
+    var cutoff=new Date();cutoff.setDate(cutoff.getDate()-chartRangeDays);
+    var filtered=snaps.filter(function(s){return s.date>=cutoff.toISOString().split('T')[0];});
+    if(filtered.length>1)snaps=filtered;
+  }
+  var points=snaps.map(function(s){var g=s.gain!==undefined?s.gain:0;return{date:s.date,gain:g};});
+  if(points.length<2){
+    var col0=currentGL>=0?'#22c55e':'#ef4444';
+    svg.innerHTML='<text x="160" y="48" text-anchor="middle" fill="'+col0+'" font-size="26" font-weight="700" font-family="sans-serif">'+(currentGL>=0?'+':'\u2212')+'\u00a3'+Math.abs(currentGL).toLocaleString('en-GB',{maximumFractionDigits:0})+'</text>'+
+      '<text x="160" y="68" text-anchor="middle" fill="'+col0+'" font-size="14" font-family="sans-serif">'+(currentPct>=0?'+':'')+currentPct.toFixed(2)+'%</text>'+
+      '<text x="160" y="95" text-anchor="middle" fill="#6b7280" font-size="10" font-family="sans-serif">Sync daily to build gain/loss history</text>';
+    if(xlbls)xlbls.innerHTML='';
+    return;
+  }
+  var W=320,H=130,PX=38,PY=10,iW=W-PX*2,iH=H-PY*2;
+  var gains=points.map(function(p){return p.gain;});
+  var maxG=Math.max.apply(null,gains.concat([0.01]));
+  var minG=Math.min.apply(null,gains.concat([-0.01]));
+  if(maxG<0)maxG=Math.abs(minG)*0.1;if(minG>0)minG=-maxG*0.1;
+  var range=maxG-minG||1;maxG+=range*0.15;minG-=range*0.05;range=maxG-minG;
+  var sx=function(i){return PX+(i/(points.length-1))*iW;};
+  var sy=function(v){return PY+iH-((v-minG)/range)*iH;};
+  var zeroY=sy(0).toFixed(1);
+  var path=points.map(function(p,i){return(i?'L':'M')+sx(i).toFixed(1)+','+sy(p.gain).toFixed(1);}).join(' ');
+  var lx=sx(points.length-1).toFixed(1);
+  var lastGain=points[points.length-1].gain;
+  var col=lastGain>=0?'#22c55e':'#ef4444';
+  var area=path+' L'+lx+','+zeroY+' L'+PX+','+zeroY+' Z';
+  var gl='<line x1="'+PX+'" y1="'+zeroY+'" x2="'+(W-PX*0.3)+'" y2="'+zeroY+'" stroke="#374151" stroke-width="1.5"/>'+
+    '<text x="'+(PX-3)+'" y="'+(parseFloat(zeroY)+3)+'" text-anchor="end" fill="#6b7280" font-size="8" font-family="sans-serif">\u00a30</text>';
+  [-2,-1,1,2].forEach(function(n){
+    var yv=n*(range/4)+(maxG+minG)/2;if(Math.abs(yv)<range*0.05)return;
+    var yp=sy(yv).toFixed(1);if(parseFloat(yp)<PY||parseFloat(yp)>PY+iH)return;
+    var lbl=(yv>=0?'+':'\u2212')+'\u00a3'+(Math.abs(yv)>=1000?(Math.abs(yv)/1000).toFixed(0)+'k':Math.round(Math.abs(yv)));
+    gl+='<line x1="'+PX+'" y1="'+yp+'" x2="'+(W-PX*0.3)+'" y2="'+yp+'" stroke="#1f2937" stroke-width="1"/>'+
+      '<text x="'+(PX-3)+'" y="'+(parseFloat(yp)+3)+'" text-anchor="end" fill="#4b5563" font-size="8" font-family="sans-serif">'+lbl+'</text>';
+  });
+  svg.innerHTML='<defs><linearGradient id="gg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="'+col+'" stop-opacity=".3"/><stop offset="100%" stop-color="'+col+'" stop-opacity=".05"/></linearGradient></defs>'+
+    gl+'<path d="'+area+'" fill="url(#gg2)"/>'+
+    '<path d="'+path+'" stroke="'+col+'" stroke-width="2.5" fill="none" stroke-linejoin="round" stroke-linecap="round"/>'+
+    '<circle cx="'+lx+'" cy="'+sy(lastGain).toFixed(1)+'" r="4" fill="'+col+'"/>';
+  if(xlbls){
+    var lc=Math.min(5,points.length);
+    xlbls.innerHTML=Array.from({length:lc},function(_,li){
+      var idx=Math.round(li*(points.length-1)/(lc-1));
+      var d=new Date(points[idx].date);
+      return '<span style="flex:1;text-align:'+(li===0?'left':li===lc-1?'right':'center')+'">'+d.toLocaleDateString('en-GB',{day:'numeric',month:'short'})+'</span>';
+    }).join('');
+  }
+}
+
+// ── DASHBOARD ─────────────────────────────────────────────────────────────────
+function renderDash(){
+  saveSnapshot(false);
+  renderGrowthChart();
+  var ann=totalAnn(),val=totalVal(),cost=totalCost(),gl=totalGL();
+  var glPct=cost>0?gl/cost*100:0;
+  document.getElementById('d-val').textContent=fmt(val);
+  var glEl=document.getElementById('d-gl');glEl.textContent=(gl>=0?'+':'-')+fmt(Math.abs(gl));glEl.className='sv '+(gl>=0?'g':'r');
+  document.getElementById('d-glp').textContent=(glPct>=0?'+':'')+n2(glPct)+'%';
+  document.getElementById('d-ann').textContent=fmt(ann);
+  document.getElementById('d-mon').textContent=fmt(ann/12);
+  document.getElementById('d-inv').textContent=fmt(cost);
+  document.getElementById('d-yld').textContent=cost>0?n2(ann/cost*100)+'%':'-';
+  // Bank balance
+  var bbEl=document.getElementById('d-bank-total');
+  var blblEl=document.getElementById('d-bank-label-display');
+  var binpEl=document.getElementById('bank-balance');
+  var lblinpEl=document.getElementById('bank-label');
+  if(bbEl){bbEl.textContent=fmt(DB.bankBalance||0);bbEl.style.color=(DB.bankBalance||0)>0?'var(--blu)':'var(--mid)';}
+  if(blblEl)blblEl.textContent=DB.bankLabel||'No account set';
+  if(binpEl&&!binpEl.value&&DB.bankBalance)binpEl.value=DB.bankBalance;
+  if(lblinpEl&&!lblinpEl.value&&DB.bankLabel)lblinpEl.value=DB.bankLabel;
+  // Bars
+  var sched=buildSchedule();
+  var dripMult=DB.drip?1+(totalAnn()>0&&totalVal()>0?totalAnn()/totalVal()/12:0):1;
+  var schedAmts=sched.map(function(b){return b.total*dripMult;});
+  var maxB=Math.max.apply(null,schedAmts.concat([0.01]));
+  var thisM=new Date().toLocaleDateString('en-GB',{month:'short'});
+  var barsEl=document.getElementById('d-bars'),blblsEl=document.getElementById('d-blbls');
+  if(barsEl){
+    barsEl.innerHTML=sched.map(function(b,i){
+      var amt=schedAmts[i],h=Math.max(2,(amt/maxB)*52),isCur=b.label===thisM,hasData=amt>0;
+      var lbl=amt>=1000?'\u00a3'+(amt/1000).toFixed(1)+'k':amt>=1?'\u00a3'+Math.round(amt):'';
+      return '<div class="bw" style="justify-content:flex-end">'+
+        '<div style="font-size:7px;color:'+(isCur?'var(--amb)':'var(--grn)')+';text-align:center;line-height:1;margin-bottom:1px">'+lbl+'</div>'+
+        '<div class="bf" style="height:'+h+'px;background:'+(isCur?'var(--amb)':'var(--grn)')+(hasData?'':'33')+';min-height:'+(hasData?'2':'1')+'px"></div>'+
+      '</div>';
+    }).join('');
+  }
+  if(blblsEl)blblsEl.innerHTML=sched.map(function(b){return '<div style="flex:1;text-align:center;font-size:7.5px;color:var(--mid)">'+b.label+'</div>';}).join('');
+  var projTotal=schedAmts.reduce(function(s,v){return s+v;},0);
+  var ptEl=document.getElementById('d-proj-total'),dlEl=document.getElementById('d-drip-lbl');
+  if(ptEl)ptEl.textContent=fmt(projTotal);
+  if(dlEl)dlEl.textContent=DB.drip?' (with DRIP)':'';
+  // Split
+  var invAnn=acctAnn('invest'),isaAnn=acctAnn('isa'),invVal=acctVal('invest'),isaVal=acctVal('isa');
+  var invCost=acctCost('invest'),isaCost=acctCost('isa'),invGL=invVal-invCost,isaGL=isaVal-isaCost;
+  var splitEl=document.getElementById('d-split');
+  if(!allH().length){splitEl.innerHTML='<div style="color:var(--mid);font-size:12px">Tap \u21BB Sync T212 above to load your portfolio</div>';}
+  else{
+    var pInv=ann>0?invAnn/ann*100:0,pIsa=ann>0?isaAnn/ann*100:0;
+    splitEl.innerHTML=
+      '<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px">'+
+        '<div><span style="font-size:13px;font-weight:700;color:var(--grn)">Invest</span><span style="font-size:10px;color:var(--mid);margin-left:7px">'+DB.invest.holdings.length+' holdings</span></div>'+
+        '<div><span style="font-size:13px;font-weight:800;color:var(--grn)">'+fmt(invVal)+'</span><span style="font-size:10px;margin-left:6px;color:'+(invGL>=0?'var(--grn)':'var(--red)')+'">'+( invGL>=0?'+':'')+fmt(invGL)+'</span></div></div>'+
+        '<div style="display:flex;justify-content:space-between;font-size:10px;color:var(--mid);margin-bottom:4px"><span>'+fmt(invAnn)+'/yr</span><span>'+n2(pInv)+'% of income</span></div>'+
+        '<div class="prog"><div class="pf" style="width:'+pInv.toFixed(1)+'%;background:var(--grn)"></div></div></div>'+
+      '<div><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px">'+
+        '<div><span style="font-size:13px;font-weight:700;color:var(--amb)">ISA</span><span style="font-size:10px;color:var(--mid);margin-left:7px">'+DB.isa.holdings.length+' holdings</span></div>'+
+        '<div><span style="font-size:13px;font-weight:800;color:var(--amb)">'+fmt(isaVal)+'</span><span style="font-size:10px;margin-left:6px;color:'+(isaGL>=0?'var(--grn)':'var(--red)')+'">'+( isaGL>=0?'+':'')+fmt(isaGL)+'</span></div></div>'+
+        '<div style="display:flex;justify-content:space-between;font-size:10px;color:var(--mid);margin-bottom:4px"><span>'+fmt(isaAnn)+'/yr</span><span>'+n2(pIsa)+'% of income</span></div>'+
+        '<div class="prog"><div class="pf" style="width:'+pIsa.toFixed(1)+'%;background:var(--amb)"></div></div></div>';
+  }
+  // Upcoming
+  var now=new Date();now.setHours(0,0,0,0);
+  var items=[];
+  buildSchedule().forEach(function(b){b.items.forEach(function(i){if(i.date>=now)items.push(i);});});
+  items.sort(function(a,b){return a.date-b.date;});
+  document.getElementById('d-next').innerHTML=items.slice(0,5).map(function(i){
+    var isa=i.acct==='isa';
+    return '<div style="display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid var(--bord)">'+
+      '<div class="avatar '+(isa?'isa':'inv')+'">'+i.ticker.slice(0,4)+'</div>'+
+      '<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:700">'+i.ticker+
+        '<span class="pos-badge '+(isa?'isa':'inv')+'" style="margin-left:6px">'+(isa?'ISA':'INVEST')+'</span></div>'+
+        '<div style="font-size:10px;color:var(--mid);margin-top:1px">'+fdate(i.date)+'</div></div>'+
+      '<div style="font-size:14px;font-weight:800;color:'+(isa?'var(--amb)':'var(--grn)')+'">'+fmt(i.amount)+'</div></div>';
+  }).join('')||'<div style="color:var(--mid);font-size:12px">No upcoming payments found</div>';
+}
+
+// ── PORTFOLIO ─────────────────────────────────────────────────────────────────
+function addHolding() {
+  var ticker=(document.getElementById('f-tk').value||'').trim().toUpperCase();
+  if (!ticker){alert('Ticker required');return;}
+  var name=(document.getElementById('f-nm').value||'').trim()||ticker;
+  var shares=parseFloat(document.getElementById('f-sh').value)||0;
+  var avgPrice=parseFloat(document.getElementById('f-ap').value)||0;
+  var cpRaw=document.getElementById('f-cp').value;
+  var currPrice=cpRaw?parseFloat(cpRaw):avgPrice;
+  var priceManual=!!cpRaw;
+  var yieldPct=parseFloat(document.getElementById('f-yl').value)||(UK_YIELDS[ticker]||0);
+  var exDate=document.getElementById('f-ed').value||'';
+  var acct=document.getElementById('f-ac').value;
+  var nextPay=parseFloat(document.getElementById('f-np').value)||0;
+  var cost=shares*avgPrice;
+  var adiv=cost>0&&yieldPct>0?+(cost*yieldPct/100).toFixed(2):nextPay>0?+(nextPay*4).toFixed(2):0;
+  var existing=DB[acct].holdings.find(function(h){return h.ticker===ticker;});
+  if (existing){
+    existing.name=name;existing.shares=shares;existing.avgPrice=avgPrice;
+    if(priceManual||!existing.currentPrice){existing.currentPrice=currPrice;existing.priceManual=true;}
+    existing.yieldPct=yieldPct;existing.exDate=exDate;existing.nextPay=nextPay;existing.cost=cost;existing.annualDiv=adiv;
+  } else {
+    DB[acct].holdings.push({id:Date.now()+Math.random(),ticker:ticker,name:name,acct:acct,
+      shares:shares,avgPrice:avgPrice,currentPrice:currPrice,priceManual:priceManual,
+      cost:cost,yieldPct:yieldPct,annualDiv:adiv,nextPay:nextPay,exDate:exDate});
+  }
+  persist();renderPort();updateHeader();
+  ['f-tk','f-nm','f-sh','f-ap','f-cp','f-yl','f-np','f-ed'].forEach(function(id){document.getElementById(id).value='';});
+}
+function delHolding(acct,id){
+  if(!confirm('Remove this holding?'))return;
+  var numId=parseFloat(id);
+  DB[acct].holdings=DB[acct].holdings.filter(function(h){return h.id!==numId;});
+  persist();renderPort();updateHeader();
+}
+function posRow(h){
+  var adiv=getAdiv(h),cost=getCost(h),cv=getCurrVal(h),gl=getGL(h),glp=getGLpct(h);
+  var isa=h.acct==='isa',glCls=gl>=0?'g':'r',glSign=gl>=0?'+':'-';
+  var barW=Math.min(100,Math.abs(glp)),barCol=gl>=0?'var(--grn)':'var(--red)';
+  return '<div class="pos">'+
+    '<div class="pos-head">'+
+      '<div class="avatar '+(isa?'isa':'inv')+'">'+h.ticker.slice(0,4)+'</div>'+
+      '<div class="pos-title">'+
+        '<div class="pos-name">'+h.name+'</div>'+
+        '<div class="pos-sub">'+(h.shares>0?n2(h.shares)+' shares':'')+
+          (h.avgPrice>0?' · avg '+fmt(h.avgPrice):'')+'</div>'+
+      '</div>'+
+      '<span class="pos-badge '+(isa?'isa':'inv')+'">'+(isa?'ISA':'INVEST')+'</span>'+
+      '<button class="del-btn" data-acct="'+h.acct+'" data-id="'+h.id+'" onclick="delHolding(this.dataset.acct,this.dataset.id)">&#10005;</button>'+
+    '</div>'+
+    '<div class="pos-grid">'+
+      '<div class="pc"><div class="pcl">Value</div><div class="pcv '+(isa?'a':'g')+'">'+fmt(cv)+'</div></div>'+
+      '<div class="pc"><div class="pcl">Gain / Loss</div>'+
+        '<div class="pcv '+glCls+'">'+glSign+fmt(Math.abs(gl))+'</div>'+
+        '<div style="font-size:9px;color:var(--mid)">'+(glp>=0?'+':'')+n2(glp)+'%</div>'+
+        '<div class="gain-bar"><div style="width:'+barW+'%;height:100%;background:'+barCol+';border-radius:2px"></div></div>'+
+      '</div>'+
+      '<div class="pc"><div class="pcl">Cost Basis</div><div class="pcv">'+fmt(cost)+'</div></div>'+
+    '</div>'+
+    '<div class="pos-div-row">'+
+      '<div class="pc"><div class="pcl">Yield</div><div class="pcv a">'+(h.yieldPct>0?n2(h.yieldPct)+'%':'-')+'</div></div>'+
+      '<div class="pc"><div class="pcl">Annual</div><div class="pcv '+(isa?'a':'g')+'">'+(adiv>0?fmt(adiv):'-')+'</div></div>'+
+      '<div class="pc"><div class="pcl">Next Pay</div><div class="pcv b">'+(h.nextPay>0?fmt(h.nextPay):'-')+'</div></div>'+
+      '<div class="pc"><div class="pcl">Ex-Div</div><div class="pcv" style="font-size:10px">'+(h.exDate?fdate(h.exDate):'-')+'</div></div>'+
+    '</div>'+
+  '</div>';
+}
+
+function renderPort(){
+  var capGL=totalVal()-totalCost();
+  var divsRcv=allHist().reduce(function(s,h){return s+(h.amount||0);},0);
+  var totalRet=capGL+divsRcv;
+  var capEl=document.getElementById('ov-gl-cap');
+  var divEl=document.getElementById('ov-gl-div');
+  var glEl=document.getElementById('ov-gl-total');
+  if(capEl){capEl.textContent=(capGL>=0?'+':'')+fmt(capGL);capEl.style.color=capGL>=0?'var(--grn)':'var(--red)';}
+  if(divEl)divEl.textContent='+'+fmt(divsRcv);
+  if(glEl){glEl.textContent=(totalRet>=0?'+':'')+fmt(totalRet);glEl.style.color=totalRet>=0?'var(--grn)':'var(--red)';}
+  ['invest','isa'].forEach(function(acct){
+    var hs=DB[acct].holdings;
+    var ann=hs.reduce(function(s,h){return s+getAdiv(h);},0);
+    var val=hs.reduce(function(s,h){return s+getCurrVal(h);},0);
+    var cost=hs.reduce(function(s,h){return s+getCost(h);},0);
+    var gl2=val-cost;
+    var pfx=acct==='invest'?'inv':'isa';
+    document.getElementById(pfx+'-cnt').textContent=hs.length+' position'+(hs.length!==1?'s':'');
+    document.getElementById(pfx+'-tot').textContent=hs.length?fmt(val)+' \u00b7 '+(gl2>=0?'+':'-')+fmt(Math.abs(gl2))+' \u00b7 '+fmt(ann)+'/yr':'';
+    document.getElementById(pfx+'-list').innerHTML=hs.length?hs.map(posRow).join(''):
+      '<div class="empty"><div class="ei">'+(acct==='invest'?'\uD83D\uDCCA':'\uD83D\uDEE1\uFE0F')+'</div><p>Tap Sync T212 on Dashboard</p></div>';
+  });
+}
+
+// ── CALENDAR ──────────────────────────────────────────────────────────────────
+function renderCal(){
+  var sched=buildSchedule();
+  var now=new Date();now.setHours(0,0,0,0);
+  var d30=new Date(now);d30.setDate(d30.getDate()+30);
+  var d90=new Date(now);d90.setDate(d90.getDate()+90);
+  var t30=0,t90=0,t12=0;
+  sched.forEach(function(b){b.items.forEach(function(i){
+    if(i.date<now)return;t12+=i.amount;
+    if(i.date<=d30)t30+=i.amount;if(i.date<=d90)t90+=i.amount;
+  });});
+  document.getElementById('c30').textContent=fmt(t30);
+  document.getElementById('c90').textContent=fmt(t90);
+  document.getElementById('c12').textContent=fmt(t12);
+  var body=document.getElementById('cal-body');
+  var upcoming=[];
+  sched.forEach(function(b){b.items.forEach(function(i){if(i.date>=now)upcoming.push(i);});});
+  upcoming.sort(function(a,b){return a.date-b.date;});
+  if(!upcoming.length){body.innerHTML='<div class="empty"><div class="ei">\uD83D\uDCC5</div><p>Sync T212 to see upcoming payments</p></div>';return;}
+  var months={};
+  upcoming.forEach(function(i){
+    var key=i.date.getFullYear()+'-'+String(i.date.getMonth()+1).padStart(2,'0');
+    if(!months[key])months[key]={label:fmo(i.date),total:0,items:[]};
+    months[key].total+=i.amount;months[key].items.push(i);
+  });
+  body.innerHTML=Object.keys(months).sort().map(function(key){
+    var m=months[key];
+    return '<div class="cal-card"><div class="cal-hd"><span class="cal-mo">'+m.label+'</span><span class="cal-tot">'+fmt(m.total)+'</span></div>'+
+      m.items.map(function(i){var isa=i.acct==='isa';
+        return '<div class="cal-row"><div class="cal-date">'+fdate(i.date)+'</div>'+
+          '<div class="cal-tk" style="color:'+(isa?'var(--amb)':'var(--grn)')+'">'+i.ticker+'</div>'+
+          '<div class="cal-name">'+i.name+'<span class="pos-badge '+(isa?'isa':'inv')+'" style="margin-left:5px">'+(isa?'ISA':'INV')+'</span></div>'+
+          '<div class="cal-amt" style="color:'+(isa?'var(--amb)':'var(--grn)')+'">'+fmt(i.amount)+'</div></div>';
+      }).join('')+'</div>';
+  }).join('');
+}
+
+// ── HISTORY ───────────────────────────────────────────────────────────────────
+function renderHist(){
+  var all=allHist().slice().sort(function(a,b){return new Date(b.date)-new Date(a.date);});
+  document.getElementById('ht').textContent=fmt(all.reduce(function(s,h){return s+h.amount;},0));
+  document.getElementById('hc').textContent=all.length;
+  var body=document.getElementById('hist-body');
+  if(!all.length){body.innerHTML='<div class="empty"><div class="ei">\uD83D\uDCDC</div><p>Sync T212 to see dividend history</p></div>';return;}
+  body.innerHTML=all.map(function(h){var isa=h.acct==='isa';
+    return '<div class="hist-row"><div class="hist-date">'+fdate(h.date)+'</div>'+
+      '<div class="hist-info"><div class="hist-tk">'+h.ticker+'<span class="pos-badge '+(isa?'isa':'inv')+'" style="margin-left:5px">'+(isa?'ISA':'INV')+'</span></div>'+
+      '<div class="hist-name">'+(h.name||'')+'</div></div>'+
+      '<div class="hist-amt" style="color:'+(isa?'var(--amb)':'var(--grn)')+'">'+fmt(h.amount)+'</div></div>';
+  }).join('');
+}
+
+// ── PROJECTION ────────────────────────────────────────────────────────────────
+function toggleDrip(){
+  dripOn=!dripOn;DB.drip=dripOn;persist();
+  document.getElementById('drip-tog').classList.toggle('on',dripOn);
+  document.getElementById('drip-row').classList.toggle('on',dripOn);
+  document.getElementById('drip-lbl').style.color=dripOn?'var(--grn)':'var(--txt)';
+  document.getElementById('drip-sub').textContent=dripOn?'Compound growth on':'Taking dividends as cash';
+  renderProj();
+}
+function renderProj(){
+  var madd=parseInt(document.getElementById('p-a').value)||0;
+  var yrs=parseInt(document.getElementById('p-y').value)||10;
+  document.getElementById('p-al').textContent='£'+madd;
+  document.getElementById('p-yl').textContent=yrs+' year'+(yrs!==1?'s':'');
+  document.getElementById('p-yn').textContent=yrs;
+  document.getElementById('p-el').textContent=yrs+'yr';
+  var pv=totalVal()||totalAnn()*22;
+  var yr0=totalAnn(),yRate=pv>0&&yr0>0?yr0/pv:0.045;
+  var data=[],recv=0;
+  for(var y=1;y<=yrs;y++){
+    for(var m=0;m<12;m++){var mDiv=pv*yRate/12;recv+=mDiv;if(dripOn)pv+=mDiv;pv+=madd;}
+    data.push({y:y,pv:Math.round(pv),adiv:Math.round(pv*yRate),recv:Math.round(recv)});
+  }
+  var fin=data[data.length-1]||{};
+  document.getElementById('p-pv').textContent=fin.pv?fmt(fin.pv):'-';
+  document.getElementById('p-ad').textContent=fin.adiv?fmt(fin.adiv):'-';
+  document.getElementById('p-md').textContent=fin.adiv?fmt(fin.adiv/12):'-';
+  document.getElementById('p-tr').textContent=fin.recv?fmt(fin.recv):'-';
+  if(data.length>1){
+    var W=320,H=100,PX=10,PY=8;
+    var mxP=Math.max.apply(null,data.map(function(d){return d.pv;}).concat([1]));
+    var mxD=Math.max.apply(null,data.map(function(d){return d.adiv;}).concat([1]));
+    var sx=function(i){return PX+(i/(data.length-1))*(W-PX*2);};
+    var syP=function(v){return PY+(H-PY*2)-(v/mxP)*(H-PY*2);};
+    var syD=function(v){return PY+(H-PY*2)-(v/mxD)*(H-PY*2);};
+    var vp=data.map(function(d,i){return(i?'L':'M')+sx(i).toFixed(1)+','+syP(d.pv).toFixed(1);}).join(' ');
+    var dp=data.map(function(d,i){return(i?'L':'M')+sx(i).toFixed(1)+','+syD(d.adiv).toFixed(1);}).join(' ');
+    var lx=sx(data.length-1).toFixed(1),bot=(H-PY).toFixed(1);
+    document.getElementById('psvg').innerHTML=
+      '<defs><linearGradient id="gp" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#22c55e" stop-opacity=".25"/><stop offset="100%" stop-color="#22c55e" stop-opacity="0"/></linearGradient>'+
+      '<linearGradient id="gd" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f59e0b" stop-opacity=".2"/><stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/></linearGradient></defs>'+
+      '<path d="'+vp+' L'+lx+','+bot+' L'+PX+','+bot+' Z" fill="url(#gp)"/>'+
+      '<path d="'+vp+'" stroke="#22c55e" stroke-width="2" fill="none" stroke-linejoin="round" stroke-linecap="round"/>'+
+      '<path d="'+dp+' L'+lx+','+bot+' L'+PX+','+bot+' Z" fill="url(#gd)"/>'+
+      '<path d="'+dp+'" stroke="#f59e0b" stroke-width="2" fill="none" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="5 3"/>'+
+      '<circle cx="'+lx+'" cy="'+syP(fin.pv||0).toFixed(1)+'" r="4" fill="#22c55e"/>'+
+      '<circle cx="'+lx+'" cy="'+syD(fin.adiv||0).toFixed(1)+'" r="4" fill="#f59e0b"/>';
+  }
+  // Monthly bars
+  var sched2=buildSchedule();
+  var mvals=sched2.map(function(b){return b.total;});
+  var maxM=Math.max.apply(null,mvals.concat([0.01]));
+  var minM2=Math.min.apply(null,mvals.filter(function(v){return v>0;}).concat([0]));
+  var avgM=mvals.reduce(function(s,v){return s+v;},0)/mvals.length;
+  var thisM2=new Date().toLocaleDateString('en-GB',{month:'short'});
+  document.getElementById('proj-mbars').innerHTML=sched2.map(function(b){
+    var h=Math.max(2,(b.total/maxM)*72);
+    var isCur=b.label===thisM2,isHigh=b.total===maxM;
+    var col=isCur?'var(--amb)':'var(--grn)';
+    var op=isCur||isHigh?'1':'0.55';
+    return '<div class="bw" style="position:relative">'+
+      '<div style="font-size:7px;color:var(--mid);font-variant-numeric:tabular-nums;margin-bottom:2px;text-align:center">'+(b.total>0?'£'+Math.round(b.total):'')+'</div>'+
+      '<div class="bf" style="height:'+h+'px;background:'+col+';opacity:'+op+'"></div>'+
+    '</div>';
+  }).join('');
+  document.getElementById('proj-mblbls').innerHTML=sched2.map(function(b){
+    return '<div style="flex:1;text-align:center;font-size:7.5px;color:var(--mid)">'+b.label+'</div>';
+  }).join('');
+  document.getElementById('proj-mlow').textContent=fmt(minM2);
+  document.getElementById('proj-mavg').textContent=fmt(avgM);
+  document.getElementById('proj-mhigh').textContent=fmt(maxM);
+  document.getElementById('p-tb').innerHTML=data.slice(0,Math.min(15,yrs)).map(function(d){
+    return '<tr><td>'+d.y+'</td><td>'+fmt(d.pv)+'</td><td>'+fmt(d.adiv)+'</td><td>'+fmt(d.adiv/12)+'</td></tr>';
+  }).join('')+(yrs>15?'<tr><td colspan="4" style="color:var(--mid);font-size:10px;padding-top:6px">+'+(yrs-15)+' more years</td></tr>':'');
+}
+
+// ── GOALS ─────────────────────────────────────────────────────────────────────
+function saveGoal(){
+  DB.goalMonthly=parseFloat(document.getElementById('goal-monthly').value)||0;
+  persist();renderGoal();
+}
+function renderGoal(){
+  var goal=DB.goalMonthly||0,curr=totalAnn()/12;
+  var yld=totalCost()>0?totalAnn()/totalCost():0.045;
+  var inp=document.getElementById('goal-monthly');
+  if(inp&&!inp.value&&goal)inp.value=goal;
+  document.getElementById('goal-current').textContent=fmt(curr);
+  document.getElementById('goal-ann').textContent=fmt(goal*12);
+  var gap=Math.max(0,goal-curr),pct=goal>0?Math.min(100,curr/goal*100):0;
+  document.getElementById('goal-bar').style.width=pct.toFixed(1)+'%';
+  document.getElementById('goal-bar').style.background=pct>=100?'linear-gradient(90deg,#16a34a,#4ade80)':pct>=75?'linear-gradient(90deg,var(--grn),#86efac)':pct>=50?'linear-gradient(90deg,var(--amb),#fcd34d)':'linear-gradient(90deg,var(--red),#f87171)';
+  document.getElementById('goal-pct').textContent=n2(pct)+'% of goal';
+  document.getElementById('goal-gap').textContent=gap>0?fmt(gap)+'/mo to go':'Goal reached!';
+  document.getElementById('goal-need').textContent=fmt(gap);
+  document.getElementById('goal-need').className='sv '+(gap>0?'r':'g');
+  var capNeeded=yld>0?(goal*12)/yld:0,capGap=Math.max(0,capNeeded-totalCost());
+  document.getElementById('goal-cap').textContent=capGap>0?fmt(capGap)+' more':'Funded';
+  if(gap>0&&yld>0){
+    var pv2=totalVal()||totalAnn()*22,months=0;
+    while(months<600){months++;pv2+=200;pv2+=pv2*yld/12;if(pv2*yld/12>=goal)break;}
+    var yrs2=Math.floor(months/12),mos2=months%12;
+    document.getElementById('goal-eta').textContent=months>=600?'50yr+':(yrs2>0?yrs2+'yr ':'')+(mos2>0?mos2+'mo':'');
+  } else {
+    document.getElementById('goal-eta').textContent=gap<=0?'Now!':'-';
+  }
+  var milestones=[
+    {label:'Coffee money',amount:5},{label:'Daily lunch',amount:10},
+    {label:'Phone bill',amount:30},{label:'Weekend away',amount:100},
+    {label:'Bills covered',amount:200},{label:'Half salary',amount:500},
+    {label:'Full salary',amount:goal>0?goal:1000}
+  ];
+  document.getElementById('goal-milestones').innerHTML=milestones.map(function(m){
+    var p=Math.min(100,curr/m.amount*100),done=curr>=m.amount;
+    return '<div style="margin-bottom:10px">'+
+      '<div style="display:flex;justify-content:space-between;margin-bottom:4px">'+
+        '<span style="font-size:12px;font-weight:600;color:'+(done?'var(--grn)':'var(--txt)')+'">'+
+          (done?'✓ ':'')+m.label+'</span>'+
+        '<span style="font-size:12px;font-variant-numeric:tabular-nums;color:'+(done?'var(--grn)':'var(--mid)')+'">'+fmt(m.amount)+'/mo</span>'+
+      '</div>'+
+      '<div style="background:var(--bord);border-radius:4px;height:6px;overflow:hidden">'+
+        '<div style="width:'+p.toFixed(1)+'%;height:100%;background:'+(done?'var(--grn)':'var(--amb)')+';border-radius:4px"></div>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+  var holdings=allH();
+  if(!holdings.length){document.getElementById('drip-table').innerHTML='<div style="color:var(--mid);font-size:12px">No holdings yet</div>';return;}
+  document.getElementById('drip-table').innerHTML=
+    '<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:0;margin-bottom:6px">'+
+      ['Ticker','Yield','Annual','2x in'].map(function(h){
+        return '<div style="font-size:9px;text-transform:uppercase;letter-spacing:.6px;color:var(--mid);padding-bottom:6px;border-bottom:1px solid var(--bord)">'+h+'</div>';
+      }).join('')+
+    '</div>'+
+    holdings.slice().sort(function(a,b){return getAdiv(b)-getAdiv(a);}).map(function(h){
+      var adiv=getAdiv(h),cost=getCost(h),yld2=cost>0&&adiv>0?adiv/cost:0;
+      var dblYrs=yld2>0?(72/(yld2*100)).toFixed(1):'-';
+      var isa=h.acct==='isa';
+      return '<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:0;padding:7px 0;border-bottom:1px solid var(--bord)22">'+
+        '<div style="font-size:12px;font-weight:700;color:'+(isa?'var(--amb)':'var(--grn)')+'">'+h.ticker+'</div>'+
+        '<div style="font-size:12px;font-variant-numeric:tabular-nums;color:var(--amb)">'+(h.yieldPct>0?n2(h.yieldPct)+'%':'-')+'</div>'+
+        '<div style="font-size:12px;font-variant-numeric:tabular-nums;color:var(--grn)">'+(adiv>0?fmt(adiv):'-')+'</div>'+
+        '<div style="font-size:12px;font-variant-numeric:tabular-nums;color:var(--lit)">'+dblYrs+(dblYrs!=='-'?' yrs':'')+'</div>'+
+      '</div>';
+    }).join('');
+}
+
+// ── LIVE PRICES (Finnhub) ─────────────────────────────────────────────────────
+function getYFTicker(h){
+  var tk=h.ticker.trim().toUpperCase();
+  if(tk.includes('.'))return tk;
+  var us=['AAPL','MSFT','GOOGL','AMZN','META','TSLA','NVDA','JPM','PLD','BEPC',
+          'NVO','NOVO','O','REXR','VST','KLAC','ASML','FSLR','LLY','PLTR',
+          'HOOD','SOFI','VERX','WINC','GAW'];
+  if(us.indexOf(tk)>-1)return tk;
+  return tk+'.L';
+}
+
+function fetchFinnhub(ticker,cb){
+  fetch('https://finnhub.io/api/v1/quote?symbol='+encodeURIComponent(ticker)+'&token='+FINN_KEY)
+    .then(function(r){return r.json();}).then(function(data){
+      var price=data&&(data.c||data.pc);
+      if(price&&price>0)cb(null,price,ticker);else cb('no data');
+    }).catch(function(e){cb(e.message||'error');});
+}
+
+function applyPrice(h,price,ticker){
+  var gbpPrice=price;
+  if(ticker.endsWith('.L')&&price>10){
+    var avgP=h.avgPrice||0;
+    if(avgP>0&&price>avgP*50)gbpPrice=price/100;
+    else if(avgP<20&&price>100)gbpPrice=price/100;
+  }
+  h.currentPrice=+gbpPrice.toFixed(4);h.priceManual=false;
+}
+
+function fetchPrices(){
+  var holdings=allH();
+  if(!holdings.length){var pl=document.getElementById('prices-log');if(pl)pl.textContent='No holdings.';return;}
+  var btn=document.getElementById('fetch-btn');
+  var status=document.getElementById('prices-status');
+  var log=document.getElementById('prices-log');
+  if(btn){btn.disabled=true;btn.textContent='Fetching...';}
+  if(status)status.textContent='';
+  if(log)log.textContent='Fetching '+holdings.length+' prices...';
+  var updated=0,failed=0,failedList=[],pending=holdings.length;
+  function done(){
+    persist();updateHeader();
+    if(btn){btn.disabled=false;btn.textContent='\u21BB Refresh Live Prices';}
+    if(status)status.textContent='('+updated+' updated, '+failed+' failed)';
+    if(log)log.textContent=updated+' updated'+(failedList.length?'\nFailed: '+failedList.join(', '):'');
+    if(document.getElementById('pg-port').classList.contains('on'))renderPort();
+    if(document.getElementById('pg-dash').classList.contains('on'))renderDash();
+  }
+  holdings.forEach(function(h){
+    fetchFinnhub(getYFTicker(h),function(err,price,tk){
+      if(!err&&price){applyPrice(h,price,tk);updated++;}
+      else{failed++;failedList.push(h.ticker);}
+      pending--;if(pending<=0)done();
+    });
+  });
+}
+
+// ── LIVE DIVIDEND DATA (Finnhub) ──────────────────────────────────────────────
+function fetchDividendData() {
+  var btn = document.getElementById('div-fetch-btn');
+  var st  = document.getElementById('div-fetch-st');
+  var holdings = allH();
+  if (!holdings.length) { if(st) st.textContent='No holdings to update.'; return; }
+  if (btn) { btn.disabled=true; btn.textContent='Fetching...'; }
+  if (st)  st.textContent = 'Fetching dividend data for ' + holdings.length + ' holdings...';
+  var updated=0, failed=0, skipped=0, pending=holdings.length;
+  var log = [];
+  var today = new Date();
+  var fromDate = new Date(today); fromDate.setFullYear(fromDate.getFullYear()-1);
+  var toDate   = new Date(today); toDate.setFullYear(toDate.getFullYear()+2);
+  var fromStr  = fromDate.toISOString().split('T')[0];
+  var toStr    = toDate.toISOString().split('T')[0];
+  function done() {
+    persist();
+    if (btn) { btn.disabled=false; btn.textContent='\u21BB Refresh Dividend Data'; }
+    if (st)  st.textContent = updated+' updated, '+skipped+' unchanged, '+failed+' failed\n'+log.join('\n');
+    recalcAll();
+    if (document.getElementById('pg-cal').classList.contains('on'))  renderCal();
+    if (document.getElementById('pg-dash').classList.contains('on')) renderDash();
+    if (document.getElementById('pg-proj').classList.contains('on')) renderProj();
+  }
+  holdings.forEach(function(h) {
+    var ticker = getYFTicker(h);
+    var url = 'https://finnhub.io/api/v1/stock/dividend?symbol='
+      + encodeURIComponent(ticker) + '&from=' + fromStr + '&to=' + toStr
+      + '&token=d80o4thr01qt5k5vlqc0d80o4thr01qt5k5vlqcg';
+    fetch(url)
+      .then(function(r){ return r.json(); })
+      .then(function(data) {
+        if (!Array.isArray(data) || !data.length) { skipped++; return; }
+        data.sort(function(a,b){ return new Date(a.date)-new Date(b.date); });
+        var future = data.filter(function(d){ return new Date(d.payDate||d.date) >= today; });
+        var past   = data.filter(function(d){ return new Date(d.payDate||d.date) <  today; });
+        var oneYrAgo = new Date(today); oneYrAgo.setFullYear(oneYrAgo.getFullYear()-1);
+        var lastYr   = past.filter(function(d){ return new Date(d.payDate||d.date) >= oneYrAgo; });
+        var annualPerShare = 0;
+        if (lastYr.length > 0) {
+          var sumPaid = lastYr.reduce(function(s,d){ return s+(d.amount||0); }, 0);
+          var firstD  = new Date(lastYr[0].date);
+          var months  = Math.max(1,(today-firstD)/(1000*60*60*24*30.5));
+          annualPerShare = sumPaid*(12/Math.min(months,12));
+        } else if (data.length > 0) {
+          var amounts = data.map(function(d){ return d.amount||0; }).filter(function(v){ return v>0; });
+          if (!amounts.length) { skipped++; return; }
+          var avg = amounts.reduce(function(s,v){return s+v;},0)/amounts.length;
+          var freq2 = 4;
+          if (data.length >= 2) {
+            var diffs2=[];
+            for (var i2=1;i2<Math.min(data.length,5);i2++) diffs2.push((new Date(data[i2].date)-new Date(data[i2-1].date))/(1000*60*60*24));
+            var ad2=diffs2.reduce(function(s,v){return s+v;},0)/diffs2.length;
+            freq2 = ad2<45?12:ad2<100?4:ad2<200?2:1;
+          }
+          annualPerShare = avg*freq2;
+        }
+        var freq=4;
+        if (data.length >= 2) {
+          var diffs=[]; for(var i=1;i<Math.min(data.length,5);i++) diffs.push((new Date(data[i].date)-new Date(data[i-1].date))/(1000*60*60*24));
+          var ad=diffs.reduce(function(s,v){return s+v;},0)/diffs.length;
+          freq=ad<45?12:ad<100?4:ad<200?2:1;
+        }
+        var nextPmt = future.length ? future[0] : (past.length ? past[past.length-1] : null);
+        if (annualPerShare > 0 && h.shares > 0) {
+          h.annualDiv = +(h.shares*annualPerShare).toFixed(2);
+          h.nextPay   = nextPmt ? +(h.shares*(nextPmt.amount||annualPerShare/freq)).toFixed(2) : +(h.annualDiv/freq).toFixed(2);
+          h.yieldPct  = h.cost>0 ? +(h.annualDiv/h.cost*100).toFixed(2) : h.yieldPct;
+          if (nextPmt&&nextPmt.exDate) h.exDate=nextPmt.exDate;
+          else if (nextPmt&&nextPmt.date) h.exDate=nextPmt.date;
+          updated++;
+          log.push('\u2713 '+h.ticker+': \u00a3'+h.annualDiv.toFixed(2)+'/yr');
+        } else { skipped++; }
+      })
+      .catch(function(e){ failed++; log.push('\u2715 '+h.ticker+': '+(e.message||'error')); })
+      .finally(function(){ pending--; if(pending<=0) done(); });
+  });
+}
+
+// ── CSV IMPORT (fallback) ─────────────────────────────────────────────────────
+function setAcct(a){
+  importAcct=a;
+  document.getElementById('btn-inv').classList.toggle('on',a==='invest');
+  document.getElementById('btn-isa').classList.toggle('on',a==='isa');
+  impSt('Ready to import into '+a.toUpperCase()+'.','');
+}
+function impSt(msg,cls){var el=document.getElementById('imp-st');el.textContent=msg;el.className=cls||'';}
+function csvSplit(line){
+  var r=[],cur='',inQ=false;
+  for(var i=0;i<line.length;i++){var c=line[i];if(c==='"'){inQ=!inQ;continue;}if(c===','&&!inQ){r.push(cur);cur='';continue;}cur+=c;}
+  r.push(cur);return r;
+}
+function enrichHolding(h, divHistory, costBasis) {
+  var basis = costBasis || h.cost || 0;
+  var kd = KNOWN_DIVS[h.ticker];
+  if (kd) {
+    var today = new Date();
+    var nextPmt = null;
+    for (var pi=0; pi<kd.payments.length; pi++) {
+      if (new Date(kd.payments[pi].payDate) >= today) { nextPmt = kd.payments[pi]; break; }
+    }
+    if (!nextPmt) nextPmt = kd.payments[kd.payments.length-1];
+    if (nextPmt && (!h.exDate || !h.priceManual)) h.exDate = nextPmt.exDate;
+    if (h.shares > 0) {
+      h.annualDiv = +(h.shares * kd.annualPerShare).toFixed(2);
+      h.nextPay   = nextPmt ? +(h.shares * nextPmt.perShare).toFixed(2) : +(h.annualDiv / kd.freq).toFixed(2);
+    }
+    if (basis > 0) h.yieldPct = +(h.annualDiv / basis * 100).toFixed(2);
+    if (!divHistory || !divHistory.length) return;
+  }
+  if (!divHistory || !divHistory.length) {
+    var ky = UK_YIELDS[h.ticker];
+    if (ky && basis > 0) {
+      h.yieldPct  = ky;
+      h.annualDiv = +(basis * ky / 100).toFixed(2);
+      h.nextPay   = +(h.annualDiv / 4).toFixed(2);
+    }
+    return;
+  }
+  var sorted = divHistory.slice().sort(function(a,b){ return new Date(a.date)-new Date(b.date); });
+  var cutoff = new Date(); cutoff.setFullYear(cutoff.getFullYear()-1);
+  var lastYr = sorted.filter(function(d){ return new Date(d.date)>=cutoff; });
+  var adiv;
+  if (lastYr.length > 0) {
+    adiv = lastYr.reduce(function(s,d){ return s+d.amount; }, 0);
+    var first2 = new Date(lastYr[0].date);
+    var mos = (new Date()-first2)/(1000*60*60*24*30.5);
+    if (mos > 0.5 && mos < 11.5) adiv = adiv*(12/mos);
+  } else {
+    adiv = sorted.slice(-4).reduce(function(s,d){ return s+d.amount; }, 0);
+  }
+  var ky2 = UK_YIELDS[h.ticker];
+  if (ky2 && lastYr.length <= 2 && basis > 0) adiv = (adiv + basis*ky2/100)/2;
+  if (!kd) {
+    h.annualDiv = +adiv.toFixed(2);
+    if (basis > 0) h.yieldPct = +(adiv/basis*100).toFixed(2);
+    var last4 = sorted.slice(-4);
+    h.nextPay = +(last4.reduce(function(s,d){ return s+d.amount; },0)/last4.length).toFixed(2);
+    if (sorted.length >= 2) {
+      var intervals=[];
+      for (var ii=1;ii<sorted.length;ii++) {
+        var diff=(new Date(sorted[ii].date)-new Date(sorted[ii-1].date))/(1000*60*60*24);
+        if(diff>10) intervals.push(diff);
+      }
+      if (intervals.length > 0) {
+        var avg=intervals.reduce(function(s,v){return s+v;},0)/intervals.length;
+        var nxt=new Date(sorted[sorted.length-1].date);
+        var tod=new Date();
+        while(nxt<=tod) nxt.setDate(nxt.getDate()+Math.round(avg));
+        var ex=new Date(nxt); ex.setDate(ex.getDate()-42);
+        h.exDate=ex.toISOString().split('T')[0];
+      }
+    }
+    if (!h.exDate && UK_YIELDS[h.ticker]) {
+      var nx=new Date(); nx.setMonth(nx.getMonth()+2);
+      h.exDate=nx.toISOString().split('T')[0];
+    }
+  }
+}
+function buildHistoricalSnapshots(rows, A, TM, TK, SH, TO) {
+  var events=[];
+  rows.forEach(function(r){
+    var action=(r[A]||'').toLowerCase();
+    if(!action.includes('buy')&&!action.includes('sell'))return;
+    var date=(r[TM]||'').split(' ')[0]; if(!date)return;
+    var tot=parseFloat(r[TO]||0);
+    events.push({date:date, amount:action.includes('buy')?tot:-tot});
+  });
+  if(!events.length) return;
+  events.sort(function(a,b){return a.date<b.date?-1:1;});
+  var byDate={}, running=0;
+  events.forEach(function(e){ running+=e.amount; byDate[e.date]=running; });
+  var dates=Object.keys(byDate).sort();
+  var today=new Date().toISOString().split('T')[0];
+  var last=dates[dates.length-1]; if(last<today)last=today;
+  var cur=new Date(dates[0]), end=new Date(last), lastVal=0;
+  var newSnaps={};
+  DB.snapshots.forEach(function(s){newSnaps[s.date]=s;});
+  var invRatio=acctCost('invest')>0&&totalCost()>0?acctCost('invest')/totalCost():0.5;
+  while(cur<=end){
+    var d=cur.toISOString().split('T')[0];
+    if(byDate[d]!==undefined)lastVal=byDate[d];
+    var total=Math.round(lastVal);
+    if(!newSnaps[d]||newSnaps[d].isCostBasis){
+      newSnaps[d]={date:d,total:total,invest:Math.round(total*invRatio),isa:Math.round(total*(1-invRatio)),isCostBasis:true};
+    }
+    cur.setDate(cur.getDate()+1);
+  }
+  var arr=Object.keys(newSnaps).sort().map(function(d){return newSnaps[d];});
+  var now90=new Date(); now90.setDate(now90.getDate()-90);
+  var thinned=[], lastWeek='';
+  arr.forEach(function(s){
+    var sd=new Date(s.date);
+    if(sd>=now90){thinned.push(s);}
+    else{var w=s.date.slice(0,7)+'-W'+Math.floor(parseInt(s.date.slice(8,10))/7);if(w!==lastWeek){thinned.push(s);lastWeek=w;}}
+  });
+  DB.snapshots=thinned;
+}
+function ingest(txt){
+  if(!txt||txt.trim().length<5){impSt('File appears empty.','err');return;}
+  var first=txt.split('\n')[0];
+  var delim=(first.match(/\t/g)||[]).length>(first.match(/,/g)||[]).length?'\t':',';
+  var lines=txt.replace(/\r\n/g,'\n').replace(/\r/g,'\n').trim().split('\n');
+  if(lines.length<2){impSt('No data rows.','err');return;}
+  var headers=lines[0].split(delim).map(function(h){return h.trim().replace(/^\uFEFF/,'');});
+  var rows=lines.slice(1).filter(function(l){return l.trim();}).map(function(line){
+    var vals=delim==='\t'?line.split('\t'):csvSplit(line);
+    var obj={};headers.forEach(function(h,i){obj[h]=(vals[i]||'').trim();});return obj;
+  });
+  var A='Action',TM='Time',TK='Ticker',NM='Name',SH='No. of shares',TO='Total',RE='Result';
+  var PP='Price / share',PC='Currency (Price / share)',ER='Exchange rate';
+  var buys=rows.filter(function(r){return r[A]&&r[A].toLowerCase().includes('buy');});
+  var sells=rows.filter(function(r){return r[A]&&r[A].toLowerCase().includes('sell');});
+  var dividends=rows.filter(function(r){return r[A]&&r[A].toLowerCase().includes('dividend');});
+  var hmap={};
+  buys.forEach(function(r){
+    var tk=r[TK];if(!tk)return;
+    if(!hmap[tk])hmap[tk]={ticker:tk,name:r[NM]||tk,shares:0,cost:0,lastPriceGBP:0,firstDate:'',lastDate:''};
+    var sh=parseFloat(r[SH])||0,tot=parseFloat(r[TO])||0;
+    var rawPrice=parseFloat(r[PP])||0,ccy=(r[PC]||'').trim().toUpperCase(),exRate=parseFloat(r[ER])||1;
+    var priceGBP=0;
+    if(rawPrice>0){if(ccy==='GBX'||ccy==='GBP'){priceGBP=ccy==='GBX'?rawPrice/100:rawPrice;}else{priceGBP=exRate>0?rawPrice/exRate:rawPrice;}}
+    hmap[tk].shares+=sh;hmap[tk].cost+=tot;
+    if(priceGBP>0)hmap[tk].lastPriceGBP=priceGBP;
+    var date=(r[TM]||'').split(' ')[0];
+    if(!hmap[tk].firstDate||date<hmap[tk].firstDate)hmap[tk].firstDate=date;
+    if(!hmap[tk].lastDate||date>hmap[tk].lastDate)hmap[tk].lastDate=date;
+  });
+  sells.forEach(function(r){
+    var tk=r[TK];if(!tk||!hmap[tk])return;
+    hmap[tk].shares-=parseFloat(r[SH])||0;hmap[tk].cost-=parseFloat(r[TO])||0;
+  });
+  var divMap={};
+  dividends.forEach(function(r){
+    var tk=r[TK];if(!tk)return;
+    var amt=parseFloat(r[TO]||r[RE]||0);if(amt<=0)return;
+    var date=(r[TM]||'').split(' ')[0];
+    if(!divMap[tk])divMap[tk]=[];
+    divMap[tk].push({date:date,amount:amt});
+  });
+  var holdingsAdded=0,holdingsUpdated=0;
+  Object.keys(hmap).forEach(function(tk){
+    var h=hmap[tk];if(h.shares<0.001)return;
+    var avgPrice=h.shares>0?h.cost/h.shares:0;
+    var existing=DB[importAcct].holdings.find(function(x){return x.ticker===tk;});
+    if(existing){
+      existing.shares=+h.shares.toFixed(6);existing.avgPrice=+avgPrice.toFixed(4);existing.cost=+h.cost.toFixed(2);
+      var newCP=h.lastPriceGBP||avgPrice;if(!existing.priceManual)existing.currentPrice=+newCP.toFixed(4);
+      enrichHolding(existing,divMap[tk]||[],h.cost);holdingsUpdated++;
+    } else {
+      var holding={id:Date.now()+Math.random(),ticker:tk,name:h.name,acct:importAcct,
+        shares:+h.shares.toFixed(6),avgPrice:+avgPrice.toFixed(4),currentPrice:+(h.lastPriceGBP||avgPrice).toFixed(4),
+        cost:+h.cost.toFixed(2),yieldPct:0,annualDiv:0,nextPay:0,exDate:'',firstBuy:h.firstDate||'',lastBuy:h.lastDate||''};
+      enrichHolding(holding,divMap[tk]||[],h.cost);
+      DB[importAcct].holdings.push(holding);holdingsAdded++;
+    }
+  });
+  var seen=new Set(DB[importAcct].history.map(function(x){return x.ticker+'|'+x.date+'|'+x.amount;}));
+  var divsAdded=0;
+  dividends.forEach(function(r){
+    var tk=r[TK];if(!tk)return;
+    var amt=parseFloat(r[TO]||r[RE]||0);if(amt<=0)return;
+    var date=(r[TM]||'').split(' ')[0];
+    var k=tk+'|'+date+'|'+amt;
+    if(!seen.has(k)){DB[importAcct].history.push({ticker:tk,name:r[NM]||tk,amount:amt,date:date,acct:importAcct});seen.add(k);divsAdded++;}
+  });
+
+
+  DB.snapshots=DB.snapshots.filter(function(s){return !s.isCostBasis;});
+  buildHistoricalSnapshots(rows,A,TM,TK,SH,TO);
+  persist();updateHeader();
+  impSt(holdingsAdded+' holdings added, '+holdingsUpdated+' updated in '+importAcct.toUpperCase()+'\n'+divsAdded+' dividend payments added\n\nTip: Go to Portfolio tab and add current prices for accurate gain/loss.','ok');
+  if(document.getElementById('pg-dash').classList.contains('on'))renderDash();
+}
+function handleFile(input){
+  var file=input.files&&input.files[0];
+  if(!file){impSt('No file selected.','err');return;}
+  impSt('Reading '+file.name+'...','ok');
+  if(file.text){file.text().then(function(t){ingest(t);setTimeout(function(){try{input.value='';}catch(e){}},500);}).catch(function(e){impSt('Read error: '+e.message+'\nTry pasting below.','err');});return;}
+  var r=new FileReader();r.onload=function(e){ingest(e.target.result);};r.onerror=function(){impSt('Could not read file. Please paste CSV text below.','err');};r.readAsText(file,'UTF-8');
+}
+function handlePaste(){var t=document.getElementById('paste-box').value;if(!t.trim()){impSt('Paste CSV text first.','err');return;}ingest(t);}
+function clearHist(){if(!confirm('Clear all dividend history?'))return;DB.invest.history=[];DB.isa.history=[];persist();impSt('History cleared.','ok');}
+function clearAll(){
+  if(!confirm('Delete ALL data?'))return;
+  DB={invest:{holdings:[],history:[]},isa:{holdings:[],history:[]},drip:true,goalMonthly:0,bankBalance:0,bankLabel:'',snapshots:[]};
+  persist();updateHeader();go('dash');
+  var el=document.getElementById('sync-st');if(el)el.textContent='All data cleared.';
+}
+
+function recalcAll(){
+  var count=0;
+  ['invest','isa'].forEach(function(acct){
+    DB[acct].holdings.forEach(function(h){
+      var divHist=DB[acct].history.filter(function(x){return x.ticker===h.ticker;});
+      enrichHolding(h,divHist,h.cost);count++;
+    });
+  });
+  persist();updateHeader();
+  var el=document.getElementById('recalc-st');
+  if(el){el.textContent='Recalculated '+count+' holdings.';el.style.color='var(--grn)';}
+  setTimeout(function(){var e=document.getElementById('recalc-st');if(e)e.textContent='';},3000);
+}
+
+// PWA
+var _installPrompt=null;
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();_installPrompt=e;var b=document.getElementById('install-btn');if(b)b.style.display='block';});
+function doInstall(){if(_installPrompt){_installPrompt.prompt();_installPrompt=null;}}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+hydrate();
+dripOn=DB.drip;
+if(!dripOn){
+  var dt=document.getElementById('drip-tog');if(dt)dt.classList.remove('on');
+  var dr=document.getElementById('drip-row');if(dr)dr.classList.remove('on');
+  var dl=document.getElementById('drip-lbl');if(dl)dl.style.color='var(--txt)';
+  var ds=document.getElementById('drip-sub');if(ds)ds.textContent='Taking dividends as cash';
+}
+recalcAll();
+updateHeader();
+renderDash();
+
+</script>
+</body>
+</html>
